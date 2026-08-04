@@ -1,0 +1,82 @@
+<svg viewBox="0 0 1200 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SMPTE color bar test card with station identification: OLWTELET, Isaac Rodrigues Barros, Brasília BR, on air">
+  <!--
+    OLWTELET station test card
+    Palette: SMPTE 75% bars on #050505. Text uses system monospace only.
+    The ON AIR dot uses a small SMIL opacity pulse (works inside <img> on GitHub).
+  -->
+
+  <defs>
+    <!-- faint CRT scanline texture laid over the bars -->
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="#000000"/>
+    </pattern>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1200" height="340" fill="#050505"/>
+
+  <!-- top technical strip -->
+  <g font-family="ui-monospace, 'Cascadia Mono', Consolas, Menlo, monospace" font-size="11" fill="#5a5a5a">
+    <text x="16" y="15" letter-spacing="2">SMPTE RP 219 · COLOR BAR SIGNAL</text>
+    <text x="1184" y="15" text-anchor="end" letter-spacing="2">75% BARS · 59.94 Hz</text>
+  </g>
+
+  <!-- row 1 : main 75% bars — white, yellow, cyan, green, magenta, red, blue -->
+  <g>
+    <rect x="0.00"    y="22" width="171.43" height="186" fill="#C0C0C0"/>
+    <rect x="171.43"  y="22" width="171.43" height="186" fill="#C0C000"/>
+    <rect x="342.86"  y="22" width="171.43" height="186" fill="#00C0C0"/>
+    <rect x="514.29"  y="22" width="171.43" height="186" fill="#00C000"/>
+    <rect x="685.71"  y="22" width="171.43" height="186" fill="#C000C0"/>
+    <rect x="857.14"  y="22" width="171.43" height="186" fill="#C00000"/>
+    <rect x="1028.57" y="22" width="171.43" height="186" fill="#0000C0"/>
+  </g>
+
+  <!-- row 2 : reverse strip — blue, black, magenta, black, cyan, black, white -->
+  <g>
+    <rect x="0.00"    y="208" width="171.43" height="28" fill="#0000C0"/>
+    <rect x="171.43"  y="208" width="171.43" height="28" fill="#0A0A0A"/>
+    <rect x="342.86"  y="208" width="171.43" height="28" fill="#C000C0"/>
+    <rect x="514.29"  y="208" width="171.43" height="28" fill="#0A0A0A"/>
+    <rect x="685.71"  y="208" width="171.43" height="28" fill="#00C0C0"/>
+    <rect x="857.14"  y="208" width="171.43" height="28" fill="#0A0A0A"/>
+    <rect x="1028.57" y="208" width="171.43" height="28" fill="#C0C0C0"/>
+  </g>
+
+  <!-- scanline overlay across both bar rows -->
+  <rect x="0" y="22" width="1200" height="214" fill="url(#scan)" opacity="0.12"/>
+
+  <!-- station identification band -->
+  <g font-family="ui-monospace, 'Cascadia Mono', Consolas, Menlo, monospace">
+    <text x="20" y="276" font-size="30" font-weight="bold" letter-spacing="6" fill="#C0C0C0">OLWTELET</text>
+    <text x="20" y="298" font-size="12" letter-spacing="2" fill="#666666">ISAAC RODRIGUES BARROS · BRASÍLIA, BR</text>
+    <text x="620" y="276" font-size="12" letter-spacing="3" fill="#444444" text-anchor="middle">CH 001 · CARRIER LOCKED</text>
+
+    <!-- ON AIR indicator -->
+    <rect x="1030" y="250" width="150" height="40" rx="3" fill="none" stroke="#2a2a2a" stroke-width="1.5"/>
+    <circle cx="1054" cy="270" r="6" fill="#C00000">
+      <animate attributeName="opacity" values="1;1;0.25;1" keyTimes="0;0.55;0.75;1" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="1072" y="276" font-size="16" letter-spacing="4" fill="#C0C0C0">ON AIR</text>
+  </g>
+
+  <!-- calibration / graticule strip -->
+  <line x1="0" y1="312" x2="1200" y2="312" stroke="#2a2a2a" stroke-width="1"/>
+  <g stroke="#3a3a3a" stroke-width="1.5">
+    <line x1="50"   y1="312" x2="50"   y2="332"/>
+    <line x1="150"  y1="320" x2="150"  y2="332"/>
+    <line x1="250"  y1="312" x2="250"  y2="332"/>
+    <line x1="350"  y1="320" x2="350"  y2="332"/>
+    <line x1="450"  y1="312" x2="450"  y2="332"/>
+    <line x1="550"  y1="320" x2="550"  y2="332"/>
+    <line x1="650"  y1="312" x2="650"  y2="332"/>
+    <line x1="750"  y1="320" x2="750"  y2="332"/>
+    <line x1="850"  y1="312" x2="850"  y2="332"/>
+    <line x1="950"  y1="320" x2="950"  y2="332"/>
+    <line x1="1050" y1="312" x2="1050" y2="332"/>
+    <line x1="1150" y1="320" x2="1150" y2="332"/>
+  </g>
+
+  <!-- thin keyline frame -->
+  <rect x="0" y="0" width="1200" height="340" fill="none" stroke="#000000" stroke-width="6"/>
+</svg>
