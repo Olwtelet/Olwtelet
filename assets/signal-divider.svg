@@ -1,0 +1,7 @@
+<svg viewBox="0 0 1200 28" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+  <!-- Decorative scrolling waveform divider. Transparent background: works on light and dark themes. -->
+  <line x1="0" y1="14" x2="1200" y2="14" stroke="#808080" stroke-width="0.75" opacity="0.35"/>
+  <path d="M -240 14 Q -210 4 -180 14 T -120 14 T -60 14 T 0 14 T 60 14 T 120 14 T 180 14 T 240 14 T 300 14 T 360 14 T 420 14 T 480 14 T 540 14 T 600 14 T 660 14 T 720 14 T 780 14 T 840 14 T 900 14 T 960 14 T 1020 14 T 1080 14 T 1140 14 T 1200 14 T 1260 14 T 1320 14 T 1380 14 T 1440 14" fill="none" stroke="#00A0A0" stroke-width="1.75" opacity="0.6">
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="-120 0" dur="6s" repeatCount="indefinite"/>
+  </path>
+</svg>

@@ -1,8 +1,10 @@
 <!--
   ══════════════════════════════════════════════════════════════════
-  OLWTELET — profile README · SMPTE broadcast theme
-  Sections are numbered as broadcast channels (100–999).
-  Local assets live in assets/ — see assets/README.md for maintenance.
+  OLWTELET — profile README · broadcast control-room theme
+  Sections are numbered as channels. Local assets in assets/
+  (see assets/README.md for maintenance). No JS, no external stats
+  services — the only remote image is the contribution snake, which
+  this repo's own workflow generates.
   ══════════════════════════════════════════════════════════════════
 -->
 
@@ -10,59 +12,73 @@
 
 <div align="center">
 
-<img src="assets/smpte-bars.svg" width="100%" alt="SMPTE color bar test card with station identification: OLWTELET — Isaac Rodrigues Barros, Brasília BR, and a red ON AIR indicator" />
+<img src="assets/header.svg" width="100%" alt="Broadcast control room: SMPTE color bars, a terminal boot sequence identifying Isaac Rodrigues Barros — computer science student working on AI, automation and full-stack web from Brasília, Brazil — VU meters, and a red ON AIR light. Station ID: OLWTELET." />
 
-<sub><code>░▒▓ CARRIER LOCKED · CH 001 · TRANSMITTING ▓▒░</code></sub>
+<sub><code>░▒▓ LIVE FEED · CH 001 · SIGNAL ORIGIN: BRASÍLIA, BR ▓▒░</code></sub>
 
 <br><br>
-
-```
-$ signal --identify
-OLWTELET — Isaac Rodrigues Barros
-CS student · AI & automation · full-stack web — Brasília, BR
-```
 
 <a href="https://olwtelet.vercel.app"><kbd> ▶ PORTFOLIO </kbd></a>&ensp;<a href="https://www.linkedin.com/in/isaac-r-a8a777368/"><kbd> LINKEDIN </kbd></a>&ensp;<a href="mailto:olwtelet@outlook.com"><kbd> ✉ EMAIL </kbd></a>
 
 </div>
 
-<br>
+<img src="assets/signal-divider.svg" width="100%" alt="" />
 
-<!-- ═══ INTRODUCTION ═══ -->
+<!-- ═══ IDENTITY ═══ -->
 
-## `100` ▸ ABOUT
+## `100` ▸ IDENTITY
 
-Computer Science student in Brasília, Brazil, working where AI meets software engineering.
+```text
+CALL SIGN   OLWTELET — Isaac Rodrigues Barros
+PROGRAM     Computer Science student
+BROADCAST   AI & automation pipelines · multi-agent systems ·
+            full-stack web, deployed for real clients
+UPLINK      Brasília, Brazil
+```
 
-I build automation pipelines that carry a job from raw input to published output, benchmark multi-agent frameworks side by side instead of taking the hype at face value, and ship full-stack web apps in TypeScript and React. The part I care about most comes after the demo works: architecture, tests, maintainability.
-
-## `200` ▸ NOW TUNING
-
-- Implementing and benchmarking ten AI agent frameworks — LangGraph, CrewAI, AutoGen, Pydantic-AI, and others — under a standardized interface in [AgentForge](https://github.com/Olwtelet/AgentForge)
-- Growing a public knowledge vault of programming notes and study logs in [Obsidian-Second-Brain](https://github.com/Olwtelet/Obsidian-Second-Brain)
+I'm drawn to the part of software that starts after the demo works: architecture, tests, maintainability. My open-source repos are working experiments; the client sites I've shipped are where those experiments meet the real world.
 
 <!-- ═══ FEATURED PROJECTS ═══ -->
 
-## `300` ▸ FEATURED TRANSMISSIONS
+## `200` ▸ MISSION LOG
+
+### `FEED A` — open source
+
+#### `CH 201` · [AGENTFORGE](https://github.com/Olwtelet/AgentForge)
+
+<sub><code>Python · LangGraph · CrewAI · AutoGen · Pydantic-AI · Streamlit</code></sub>
+
+**Objective** — cut through agent-framework hype with evidence instead of opinions.<br>
+**Build** — ten AI agent frameworks implemented behind one standardized interface, benchmarked for latency, token usage, and tool efficiency, with a Streamlit dashboard for side-by-side comparison.
+
+#### `CH 202` · [RESUMEX](https://github.com/Olwtelet/Resumex)
+
+<sub><code>Python · Selenium · PRAW · MoviePy · OpenCV</code></sub>
+
+**Objective** — publish Reddit-story Shorts with zero manual editing.<br>
+**Build** — an end-to-end pipeline: scrapes posts, scores viral potential, generates TTS narration, renders vertical video over gameplay backdrops, and uploads straight to YouTube.
+
+<sub>Also transmitting: [Obsidian-Second-Brain](https://github.com/Olwtelet/Obsidian-Second-Brain) — public study vault of CS notes and logs, organized with Zettelkasten + PARA.</sub>
+
+### `FEED B` — deployed for clients
 
 | `CH` | `PROGRAM` | `TRANSMISSION` |
 |:--:|:--|:--|
-| `301` | **[Resumex](https://github.com/Olwtelet/Resumex)** | Turns Reddit threads into ready-to-publish vertical videos: scrapes posts, scores viral potential, generates TTS narration, and renders Shorts with gameplay backdrops — end to end, no manual editing.<br><sub><code>Python · Selenium · PRAW · MoviePy · OpenCV</code></sub> |
-| `302` | **[AgentForge](https://github.com/Olwtelet/AgentForge)** | Ten AI agent frameworks implemented side by side behind standardized interfaces, with benchmarks for latency, token usage, and tool efficiency, plus a Streamlit dashboard to compare them.<br><sub><code>Python · LangGraph · CrewAI · AutoGen · Streamlit</code></sub> |
-| `303` | **[Portfolio-V1](https://github.com/Olwtelet/Portfolio-V1)** | First iteration of my personal site — minimalist, responsive, and built for fast page transitions. Live at [olwtelet.vercel.app](https://olwtelet.vercel.app).<br><sub><code>React · TypeScript · Vite</code></sub> |
-| `304` | **[Obsidian-Second-Brain](https://github.com/Olwtelet/Obsidian-Second-Brain)** | Public knowledge vault: programming notes, cheatsheets, and study logs, organized with Zettelkasten and PARA so the connections between topics stay visible.<br><sub><code>Obsidian · Markdown</code></sub> |
+| `211` | **[Integratek](https://www.integratek.com.br/)** | Business site for an IT infrastructure company — blog and quote forms integrated with WhatsApp.<br><sub><code>Astro · Tailwind CSS</code></sub> |
+| `212` | **[Rocha & Sá](https://rochaesa.vercel.app/)** | Law-firm website built for performance and SEO.<br><sub><code>Astro · Tailwind CSS</code></sub> |
+| `213` | **[Instituto Politécnico do Brasil](https://instituto-politecnico-do-brasil.vercel.app)** | Institutional site for a nonprofit working in education, training, and civic outreach. |
 
 <sub>Full schedule → [all repositories](https://github.com/Olwtelet?tab=repositories)</sub>
 
 <!-- ═══ STACK ═══ -->
 
-## `400` ▸ FREQUENCIES
+## `300` ▸ FREQUENCIES
 
 ```text
 BAND         CARRIER SIGNAL                                STATUS
 ───────────  ────────────────────────────────────────────  ────────
 LANGUAGES    Python · TypeScript · JavaScript · SQL        ● ON AIR
-FRONTEND     React · Next.js · Vite                        ● ON AIR
+FRONTEND     React · Next.js · Astro · Tailwind · Vite     ● ON AIR
 BACKEND      Node.js · Express                             ● ON AIR
 AI / DATA    NumPy · OpenCV · MoviePy · Selenium · PRAW    ● ON AIR
 AI AGENTS    LangGraph · CrewAI · AutoGen · Pydantic-AI    ◌ TUNING
@@ -74,7 +90,7 @@ TOOLING      Git · Vitest · ESLint · Prettier              ● ON AIR
 
 <!-- ═══ STATS ═══ -->
 
-## `500` ▸ TELEMETRY
+## `400` ▸ TELEMETRY
 
 <div align="center">
 
@@ -88,7 +104,7 @@ TOOLING      Git · Vitest · ESLint · Prettier              ● ON AIR
 
 <!-- ═══ CONTACT ═══ -->
 
-## `600` ▸ OPEN CHANNEL
+## `500` ▸ OPEN CHANNEL
 
 The fastest frequencies to reach me:
 
@@ -96,13 +112,13 @@ The fastest frequencies to reach me:
 
 <!-- ═══ FOOTER ═══ -->
 
-<br>
+<img src="assets/signal-divider.svg" width="100%" alt="" />
 
 <div align="center">
 
 <sub><code>█▓▒░ END OF TRANSMISSION ░▒▓█</code></sub>
 <br>
-<sub><code>SIGNAL MAINTAINED FROM BRASÍLIA, BR</code></sub>
+<sub><code>SIGNAL MAINTAINED FROM BRASÍLIA, BR · OLW-TV</code></sub>
 
 </div>
 

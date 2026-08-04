@@ -6,7 +6,8 @@ Maintenance notes for the profile README.
 
 | File | Purpose |
 |:--|:--|
-| `smpte-bars.svg` | Hero test card: SMPTE 75% bars, station ID band, animated ON AIR dot (SMIL, no JS). Edit the `<text>` elements to change name/location; the blink lives on the `<animate>` inside the red `<circle>`. |
+| `header.svg` | Hero: SMPTE bars, one-shot terminal boot sequence (~4 s, SMIL clip-path wipes), VU meters, blinking ON AIR/REC, station ID, scrolling waveform. Edit the `<text>`/`<tspan>` elements to change the boot lines or name — keep each line under ~55 characters so the clip reveal covers it. No JS. |
+| `signal-divider.svg` | Thin decorative scrolling waveform used between sections. Transparent background, safe on light and dark themes. Referenced with empty `alt=""`. |
 | `../profile/streak.svg` | Auto-generated daily by `.github/workflows/streak.yml` — do not edit by hand. |
 
 ## Palette (SMPTE 75%)
