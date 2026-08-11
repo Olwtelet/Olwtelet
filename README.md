@@ -31,12 +31,12 @@
 ```text
 CALL SIGN   OLWTELET — Isaac Rodrigues Barros
 PROGRAM     Computer Science student
-BROADCAST   AI & automation pipelines · multi-agent systems ·
+BROADCAST   agent tooling · geospatial systems · automation pipelines ·
             full-stack web, deployed for real clients
 UPLINK      Brasília, Brazil
 ```
 
-I'm drawn to the part of software that starts after the demo works: architecture, tests, maintainability. My open-source repos are working experiments; the client sites I've shipped are where those experiments meet the real world.
+I'm drawn to the part of software that starts after the demo works: architecture, tests, maintainability. The open-source repos below are where I take systems apart to learn how they hold together; the client sites are where that work has to survive contact with real users.
 
 <!-- ═══ FEATURED PROJECTS ═══ -->
 
@@ -44,29 +44,50 @@ I'm drawn to the part of software that starts after the demo works: architecture
 
 ### `FEED A` — open source
 
-#### `CH 201` · [AGENTFORGE](https://github.com/Olwtelet/AgentForge)
+#### `CH 201` · [ARGUS](https://github.com/Olwtelet/Argus)
+
+<sub><code>Python · FastAPI · Next.js · React · MapLibre GL · Tauri · Rust · AGPL-3.0</code></sub>
+
+**Objective** — watch what's happening across the planet without routing the question through anyone else's cloud.<br>
+**Build** — a self-hosted geospatial intelligence platform that pulls aircraft, vessel, satellite, seismic, weather and news feeds into a single live map. A FastAPI backend normalizes every source, a Next.js and MapLibre GL front end renders them as toggleable layers, Tauri packages the whole thing as a desktop app, and an encrypted peer-to-peer mesh lets instances sync directly with each other. Nothing leaves the machine except the requests to each configured source.
+
+#### `CH 202` · [AURORACORE](https://github.com/Olwtelet/AuroraCore)
+
+<sub><code>Rust · Bazel · MCP · Agent Client Protocol · Apache-2.0</code></sub>
+
+**Objective** — pull frontier-agent behavior out of models that cost a fraction of frontier prices.<br>
+**Build** — a coding agent in Rust, forked from OpenAI's Codex and rebuilt around the harness that low-cost models actually respond to. Providers and harnesses swap mid-session from the TUI, commands run inside OS-native sandboxes on macOS, Linux and Windows, and portability comes from shared standards — `AGENTS.md`, MCP, the Agent Client Protocol — rather than lock-in to any one vendor.
+
+#### `CH 203` · [AGENTFORGE](https://github.com/Olwtelet/AgentForge)
 
 <sub><code>Python · LangGraph · CrewAI · AutoGen · Pydantic-AI · Streamlit</code></sub>
 
-**Objective** — cut through agent-framework hype with evidence instead of opinions.<br>
-**Build** — ten AI agent frameworks implemented behind one standardized interface, benchmarked for latency, token usage, and tool efficiency, with a Streamlit dashboard for side-by-side comparison.
+**Objective** — answer "which agent framework should I use?" with measurements instead of opinions.<br>
+**Build** — ten frameworks implemented side by side behind one standardized interface, then benchmarked on latency, token cost and tool efficiency. A Streamlit dashboard runs them head to head, so the trade-offs show up as numbers rather than as claims from each project's README.
 
-#### `CH 202` · [RESUMEX](https://github.com/Olwtelet/Resumex)
+#### `CH 204` · [RESUMEX](https://github.com/Olwtelet/Resumex)
 
-<sub><code>Python · Selenium · PRAW · MoviePy · OpenCV</code></sub>
+<sub><code>Python · PRAW · Selenium · MoviePy · OpenCV · gTTS</code></sub>
 
-**Objective** — publish Reddit-story Shorts with zero manual editing.<br>
-**Build** — an end-to-end pipeline: scrapes posts, scores viral potential, generates TTS narration, renders vertical video over gameplay backdrops, and uploads straight to YouTube.
+**Objective** — take a Reddit thread all the way to a published Short with nobody in the edit bay.<br>
+**Build** — a single pipeline that scrapes posts, scores them for viral potential, writes the script, generates TTS narration, composites vertical video over gameplay footage, and uploads straight to YouTube. Subreddits, voices and pacing are configurable, so the same pipeline drives different channels.
 
-<sub>Also transmitting: [Obsidian-Second-Brain](https://github.com/Olwtelet/Obsidian-Second-Brain) — public study vault of CS notes and logs, organized with Zettelkasten + PARA.</sub>
+<sub>Also transmitting: [Obsidian-Second-Brain](https://github.com/Olwtelet/Obsidian-Second-Brain) — public vault of CS notes, cheatsheets and study logs, wired together with Zettelkasten and PARA · [Portfolio-V1](https://github.com/Olwtelet/Portfolio-V1) — the React and TypeScript build behind [olwtelet.vercel.app](https://olwtelet.vercel.app).</sub>
 
-### `FEED B` — deployed for clients
+### `FEED B` — shipped for clients
 
 | `CH` | `PROGRAM` | `TRANSMISSION` |
 |:--:|:--|:--|
-| `211` | **[Integratek](https://www.integratek.com.br/)** | Business site for an IT infrastructure company — blog and quote forms integrated with WhatsApp.<br><sub><code>Astro · Tailwind CSS</code></sub> |
-| `212` | **[Rocha & Sá](https://rochaesa.vercel.app/)** | Law-firm website built for performance and SEO.<br><sub><code>Astro · Tailwind CSS</code></sub> |
-| `213` | **[Instituto Politécnico do Brasil](https://instituto-politecnico-do-brasil.vercel.app)** | Institutional site for a nonprofit working in education, training, and civic outreach. |
+| `211` | **[Integratek](https://www.integratek.com.br/)** | Business site for a Brasília IT infrastructure company covering networking, security systems, custom builds and web work. Service pages, FAQs and a blog sit alongside quote forms that hand off directly to WhatsApp, where the client's leads already are.<br><sub><code>Astro · Tailwind CSS</code></sub> |
+| `212` | **[Rocha & Sá](https://rochaesa.vercel.app/)** | Website for a two-partner law firm practising across six areas, from corporate and labor to family and consumer law. Built for the speed and SEO that decide whether a small firm is found at all, with an articles section the partners can keep publishing into.<br><sub><code>Astro · Tailwind CSS</code></sub> |
+| `213` | **[Instituto Politécnico do Brasil](https://instituto-politecnico-do-brasil.vercel.app)** | Institutional site for a nonprofit running free education, sport and civic programs since 2006. Structured so its projects, testimonials and contact routes stay legible to donors, partners and the families it serves alike. |
+| `214` | **[CT Thalita Rodrigues](https://thalitacademy.vercel.app/)** | Site for a tennis and beach tennis training centre in Águas Claras, founded by a Para-Standing Tennis world champion. Carries class programs by skill level, the internal tournament circuit with rankings and regulations, instructional articles and video, plus free trial-lesson booking. |
+
+### `FEED C` — side band
+
+#### [FILMES HD ONLINE GRÁTIS](https://filmeshdonlinegratis.vercel.app/) &nbsp;·&nbsp; <sub><code>Astro</code></sub>
+
+One curated feature every Saturday at 20:30, picked by people who actually watched it rather than by what's trending, with watch-alongs coordinated on Discord. Schedule, rankings, dossiers and RSS — and its own station identity, broadcasting at `87.6 MHz` two notches down the dial from this one.
 
 <sub>Full schedule → [all repositories](https://github.com/Olwtelet?tab=repositories)</sub>
 
@@ -75,15 +96,16 @@ I'm drawn to the part of software that starts after the demo works: architecture
 ## `300` ▸ FREQUENCIES
 
 ```text
-BAND         CARRIER SIGNAL                                STATUS
-───────────  ────────────────────────────────────────────  ────────
-LANGUAGES    Python · TypeScript · JavaScript · SQL        ● ON AIR
-FRONTEND     React · Next.js · Astro · Tailwind · Vite     ● ON AIR
-BACKEND      Node.js · Express                             ● ON AIR
-AI / DATA    NumPy · OpenCV · MoviePy · Selenium · PRAW    ● ON AIR
-AI AGENTS    LangGraph · CrewAI · AutoGen · Pydantic-AI    ◌ TUNING
-INFRA        Docker · Google Cloud · GH Actions · Vercel   ◌ TUNING
-TOOLING      Git · Vitest · ESLint · Prettier              ● ON AIR
+BAND         CARRIER SIGNAL                               STATUS
+───────────  ───────────────────────────────────────────  ────────
+LANGUAGES    Python · TypeScript · JavaScript · SQL       ● ON AIR
+FRONTEND     React · Next.js · Astro · Tailwind · Vite    ● ON AIR
+BACKEND      Node.js · Express · FastAPI                  ● ON AIR
+AI / DATA    NumPy · OpenCV · MoviePy · Selenium · PRAW   ● ON AIR
+AI AGENTS    LangGraph · CrewAI · AutoGen · Pydantic-AI   ◌ TUNING
+SYSTEMS      Rust · Tauri · MapLibre GL                   ◌ TUNING
+INFRA        Docker · Google Cloud · GH Actions · Vercel  ◌ TUNING
+TOOLING      Git · Vitest · ESLint · Prettier             ● ON AIR
 ```
 
 <sub><code>● ON AIR</code> — in regular use&ensp;·&ensp;<code>◌ TUNING</code> — actively learning</sub>
