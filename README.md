@@ -51,21 +51,14 @@ I'm drawn to the part of software that starts after the demo works: architecture
 **Objective** — watch what's happening across the planet without routing the question through anyone else's cloud.<br>
 **Build** — a self-hosted geospatial intelligence platform that pulls aircraft, vessel, satellite, seismic, weather and news feeds into a single live map. A FastAPI backend normalizes every source, a Next.js and MapLibre GL front end renders them as toggleable layers, Tauri packages the whole thing as a desktop app, and an encrypted peer-to-peer mesh lets instances sync directly with each other. Nothing leaves the machine except the requests to each configured source.
 
-#### `CH 202` · [AURORACORE](https://github.com/Olwtelet/AuroraCore)
-
-<sub><code>Rust · Bazel · MCP · Agent Client Protocol · Apache-2.0</code></sub>
-
-**Objective** — pull frontier-agent behavior out of models that cost a fraction of frontier prices.<br>
-**Build** — a coding agent in Rust, forked from OpenAI's Codex and rebuilt around the harness that low-cost models actually respond to. Providers and harnesses swap mid-session from the TUI, commands run inside OS-native sandboxes on macOS, Linux and Windows, and portability comes from shared standards — `AGENTS.md`, MCP, the Agent Client Protocol — rather than lock-in to any one vendor.
-
-#### `CH 203` · [AGENTFORGE](https://github.com/Olwtelet/AgentForge)
+#### `CH 202` · [AGENTFORGE](https://github.com/Olwtelet/AgentForge)
 
 <sub><code>Python · LangGraph · CrewAI · AutoGen · Pydantic-AI · Streamlit</code></sub>
 
 **Objective** — answer "which agent framework should I use?" with measurements instead of opinions.<br>
 **Build** — ten frameworks implemented side by side behind one standardized interface, then benchmarked on latency, token cost and tool efficiency. A Streamlit dashboard runs them head to head, so the trade-offs show up as numbers rather than as claims from each project's README.
 
-#### `CH 204` · [RESUMEX](https://github.com/Olwtelet/Resumex)
+#### `CH 203` · [RESUMEX](https://github.com/Olwtelet/Resumex)
 
 <sub><code>Python · PRAW · Selenium · MoviePy · OpenCV · gTTS</code></sub>
 
