@@ -1,0 +1,96 @@
+name: Signal log
+
+on:
+  # The README's signal-log image points at the `output` branch, which does not hold the file until this job has
+  # run once. Without a push trigger a plain `git push` would leave a broken image on the public profile until
+  # the first scheduled run (GitHub additionally delays a brand-new cron), i.e. at the exact moment the owner and
+  # everyone he tells will look. The job force-pushes an orphan branch and is idempotent, so the extra run is free.
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/signal-log.yml"
+      - "tv/jobs/**"
+      - "tv/lib/contrib.mjs"
+      - "tv/assets/signal-log.mjs"
+      # The card's start year: `signalLog.since` in the content file is what the job defaults `--since` to and
+      # what the README's alt text says, so a change there should republish rather than wait for 03:17 UTC.
+      - "tv/content.mjs"
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Publish even if the all-time total dropped more than 10%"
+        type: boolean
+        default: false
+
+# Only the force-push to `output` needs a write scope. (There is deliberately no `actions: write`: the step that
+# used to re-enable the schedule could never run — GitHub disables the whole workflow after 60 days without
+# repository activity, and a disabled workflow does not fire — while the scope applied to every step of a job
+# that parses HTML scraped from github.com. Re-enable from the Actions tab: Signal log → Enable workflow.)
+permissions:
+  contents: write
+
+concurrency:
+  group: signal-log
+  cancel-in-progress: false
+
+jobs:
+  signal-log:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          # Both workflows run the same major (SPEC §11.8); tv-check.yml explains why it has to be the one the
+          # committed assets were built on. This job pins `--font full` itself, so only consistency matters here.
+          node-version: 24
+
+      - name: Fetch the last publication
+        run: |
+          mkdir -p prev
+          rc=0
+          git ls-remote --exit-code --heads origin output >/dev/null 2>&1 || rc=$?
+          if [ "$rc" -eq 0 ]; then
+            # The branch exists, so something IS published. From here the job must never conclude "the branch is
+            # empty", because that is what makes a bad-data day force-push the PLEASE STAND BY card over a
+            # perfectly good log. An unreadable signal-log.json therefore becomes `{}` — present, no usable
+            # total — instead of a missing file, and the job keeps the last good card.
+            git fetch --depth=1 origin output
+            git show FETCH_HEAD:signal-log.json > prev/signal-log.json 2>/dev/null || echo '{}' > prev/signal-log.json
+            # …unless the image itself is gone from the branch, in which case there is nothing to keep and the
+            # stand-by card is the only way back to a README that renders.
+            git cat-file -e FETCH_HEAD:signal-log.svg 2>/dev/null || rm -f prev/signal-log.json
+          elif [ "$rc" -ne 2 ]; then
+            # rc 2 = no such branch (nothing was ever published). Anything else means the remote could not be
+            # reached, which must fail loudly rather than be mistaken for an empty branch.
+            echo "::error::cannot reach origin to read the last publication (git ls-remote exit $rc)"
+            exit 1
+          fi
+
+      - name: Build the signal log
+        id: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FORCE: ${{ inputs.force || 'false' }}
+        # No `--since`: the start year lives in tv/content.mjs, which is also what the README's alt text reads.
+        run: node tv/jobs/signal-log.mjs --user Olwtelet --prev prev/signal-log.json --out dist
+
+      # `success() &&` restores the guard that a bare `if:` expression removes: without it this step would run
+      # even when an earlier step failed, pushing whatever half-written dist/ exists.
+      - name: Publish to the output branch
+        if: success() && steps.build.outputs.publish == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd dist
+          git init -q -b output
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add signal-log.svg signal-log.json
+          git commit -q -m "signal log $(date -u +%F)"
+          git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" output

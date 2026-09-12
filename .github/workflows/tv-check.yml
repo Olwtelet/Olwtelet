@@ -1,0 +1,88 @@
+name: TV assets check
+
+on:
+  push:
+    paths: ["tv/**", "assets/tv/**", "README.md", ".github/workflows/tv-check.yml"]
+  pull_request:
+    paths: ["tv/**", "assets/tv/**", "README.md", ".github/workflows/tv-check.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tv-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          # `--check` recomputes the embedded subset font, which is `zlib.brotliCompressSync` output, so the
+          # encoder should match the one the committed bytes were built with: Node 22.x bundles brotli 1.1.0,
+          # Node 24.x bundles 1.2.0, and the assets are built on 24. (A mismatch no longer fails the job —
+          # build.mjs reports a payload-only difference as a note — but matching keeps the log quiet.)
+          # SPEC §11.8 asks for the same major in both workflows; both say 24, and 22 was a placeholder.
+          node-version: 24
+
+      # `--font subset` is what the committed assets are built with. Asking for it explicitly makes a broken
+      # subsetter fail with its own reason ("--font subset is unavailable: …") instead of silently falling back
+      # to the full embed and reporting 15 unexplained differences.
+      #
+      # The second half is the byte-budget gate. `--check` prints `  warn  [budget] …` for a file (or for the
+      # page total) that outgrew its budget and still exits 0, because being fat is not being wrong. That is
+      # exactly the kind of warning everyone scrolls past, so it fails here instead. `tee` keeps the table in
+      # the log; the `if` form is deliberate — under `bash -e` a trailing `! grep …` chain is exempt from the
+      # errexit rules and the failure is easy to lose.
+      - name: Assets match the content file, and nothing is over budget
+        run: |
+          set -o pipefail   # without it the pipeline reports tee's status and a failed --check would pass
+          node tv/build.mjs --check --font subset | tee check.txt
+          if grep -q '^  warn  \[' check.txt; then
+            echo "::error::an asset is over its byte budget (see the warn lines above) — shrink it or re-baseline tv/lib/tokens.mjs BUDGET"
+            exit 1
+          fi
+
+      # Smoke-test the signal-log pipeline. `--prev /dev/null` means "the branch never held a good file", which
+      # sends every failure down the stand-by path — and publishing the stand-by card is a *success* (exit 0,
+      # publish=true). So the exit code proves nothing on its own and the card itself has to be asserted.
+      - run: node tv/jobs/signal-log.mjs --from-json tv/fixtures/days-2026-09-11.json --out /tmp/log --prev /dev/null
+      - name: The smoke run rendered the real card, not the stand-by slate
+        run: |
+          svg=/tmp/log/signal-log.svg
+          status=0
+          # The fixture pins its own clock, so these four readouts are stable forever.
+          for want in 'data-total="388"' 'data-sync="2026-09-11"' 'SEP 11, 2026' 'SINCE 2022'; do
+            if ! grep -qF "$want" "$svg"; then
+              echo "::error::the smoke card is missing $want"
+              status=1
+            fi
+          done
+          if grep -qF 'PLEASE STAND BY' "$svg"; then
+            echo "::error::the smoke run fell back to the stand-by card — the render pipeline is broken"
+            status=1
+          fi
+          exit $status
+
+      # And the other direction: bad data must NOT publish. Moving the fixture's `today` far past its last day
+      # fails the calendar-freshness check; a readable prev says a good card is already published, so the job
+      # must keep it and write nothing.
+      - name: Bad data does not publish
+        run: |
+          node -e "const fs=require('node:fs');const j=JSON.parse(fs.readFileSync('tv/fixtures/days-2026-09-11.json','utf8'));j.today='2026-12-25';fs.writeFileSync('/tmp/broken.json',JSON.stringify(j))"
+          echo '{"total":388,"sync":"SEP 11, 2026"}' > /tmp/prev.json
+          : > /tmp/neg-output.txt
+          GITHUB_OUTPUT=/tmp/neg-output.txt node tv/jobs/signal-log.mjs \
+            --from-json /tmp/broken.json --prev /tmp/prev.json --out /tmp/neg
+          if ! grep -qF 'publish=false' /tmp/neg-output.txt; then
+            echo "::error::stale data was accepted for publication"
+            exit 1
+          fi
+          if [ -e /tmp/neg/signal-log.svg ]; then
+            echo "::error::a rejected run still wrote signal-log.svg"
+            exit 1
+          fi
