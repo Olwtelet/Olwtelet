@@ -136,7 +136,7 @@ export default deepFreeze({
       stack: 'Astro / TypeScript / Tailwind CSS / Docker', url: 'https://www.integratek.com.br/' },
     { no: '08', slug: 'thalit-academy', title: 'CT Thalita Rodrigues', kind: 'web', category: 'CLIENT WORK', status: 'ONLINE', year: '2026', role: 'Full-Stack Developer & UI/UX Designer',
       oneLiner: 'Website for a tennis and beach tennis training centre in Brasília',
-      stack: 'Next.js / React / TypeScript', url: 'https://thalitacademy.vercel.app/' },
+      stack: 'Next.js / React / TypeScript', url: 'https://thalitarodrigues.com/' },
     { no: '09', slug: 'fhdog', title: 'Filmes HD Online Grátis', kind: 'web', category: 'PERSONAL PROJECT', status: 'ACTIVE', year: '2026', role: 'Design, development, and curation',
       oneLiner: 'Film curation platform and community archive built on an SMPTE test-card design system',
       stack: 'Astro / TypeScript / Supabase / PostgreSQL / CSS', url: 'https://filmeshdonlinegratis.vercel.app' },

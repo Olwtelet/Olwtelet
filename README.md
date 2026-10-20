@@ -63,7 +63,7 @@ I enjoy taking ideas from the first sketch to a deployed product: shaping the ar
 </p>
 
 <a href="https://olwtelet.vercel.app/en/websites/"><img src="assets/tv/guide-websites.svg" width="100%" alt="Websites, 6 files: 5. Instituto Politécnico do Brasil, online, 2026; 6. Rocha &amp; Sá, online, 2026; 7. Integratek, active, 2026; 8. CT Thalita Rodrigues, online, 2026; 9. Filmes HD Online Grátis, active, 2026; 10. Ordfall, active, 2026. Opens the websites index."></a>
-<p align="center"><sub>OPEN&nbsp;WEBSITE: <a href="https://instituto-politecnico-do-brasil.vercel.app">INSTITUTO&nbsp;POLITÉCNICO&nbsp;DO&nbsp;BRASIL</a> · <a href="https://rochaesa.vercel.app/">ROCHA&nbsp;&&nbsp;SÁ</a> · <a href="https://www.integratek.com.br/">INTEGRATEK</a> · <a href="https://thalitacademy.vercel.app/">CT&nbsp;THALITA&nbsp;RODRIGUES</a> · <a href="https://filmeshdonlinegratis.vercel.app">FILMES&nbsp;HD&nbsp;ONLINE&nbsp;GRÁTIS</a> · <a href="https://ordfall.vercel.app/en">ORDFALL</a></sub></p>
+<p align="center"><sub>OPEN&nbsp;WEBSITE: <a href="https://instituto-politecnico-do-brasil.vercel.app">INSTITUTO&nbsp;POLITÉCNICO&nbsp;DO&nbsp;BRASIL</a> · <a href="https://rochaesa.vercel.app/">ROCHA&nbsp;&&nbsp;SÁ</a> · <a href="https://www.integratek.com.br/">INTEGRATEK</a> · <a href="https://thalitarodrigues.com/">CT&nbsp;THALITA&nbsp;RODRIGUES</a> · <a href="https://filmeshdonlinegratis.vercel.app">FILMES&nbsp;HD&nbsp;ONLINE&nbsp;GRÁTIS</a> · <a href="https://ordfall.vercel.app/en">ORDFALL</a></sub></p>
 
 <details>
 <summary><b>OPEN ALL 10 FILES</b> · stacks, roles and links</summary>
@@ -95,7 +95,7 @@ I enjoy taking ideas from the first sketch to a deployed product: shaping the ar
 <sub>CLIENT WORK · STATUS: ACTIVE · 2026 · ROLE: Full-Stack Developer · Astro / TypeScript / Tailwind CSS / Docker · <a href="https://olwtelet.vercel.app/en/projects/integratek/">[OPEN FILE ►]</a> · <a href="https://www.integratek.com.br/">OPEN WEBSITE ↗</a></sub>
 
 **08 / CT THALITA RODRIGUES** — Website for a tennis and beach tennis training centre in Brasília.<br>
-<sub>CLIENT WORK · STATUS: ONLINE · 2026 · ROLE: Full-Stack Developer & UI/UX Designer · Next.js / React / TypeScript · <a href="https://olwtelet.vercel.app/en/projects/thalit-academy/">[OPEN FILE ►]</a> · <a href="https://thalitacademy.vercel.app/">OPEN WEBSITE ↗</a></sub>
+<sub>CLIENT WORK · STATUS: ONLINE · 2026 · ROLE: Full-Stack Developer & UI/UX Designer · Next.js / React / TypeScript · <a href="https://olwtelet.vercel.app/en/projects/thalit-academy/">[OPEN FILE ►]</a> · <a href="https://thalitarodrigues.com/">OPEN WEBSITE ↗</a></sub>
 
 **09 / FILMES HD ONLINE GRÁTIS** — Film curation platform and community archive built on an SMPTE test-card design system.<br>
 <sub>PERSONAL PROJECT · STATUS: ACTIVE · 2026 · ROLE: Design, development, and curation · Astro / TypeScript / Supabase / PostgreSQL / CSS · <a href="https://olwtelet.vercel.app/en/projects/fhdog/">[OPEN FILE ►]</a> · <a href="https://filmeshdonlinegratis.vercel.app">OPEN WEBSITE ↗</a></sub>
