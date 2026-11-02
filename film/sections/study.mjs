@@ -1,5 +1,5 @@
-// c8. Study: the rest before the credits, and the last paper on the page. Real sheets, in pencil, with what is written on them.
-// Obsidian Second Brain is the one project title not in cut letters, on purpose: this row is the page's rest, and the sheets are its drawing.
+// c5. Study: the rest before the credits, and the last paper on the page. Real sheets, in pencil, with what is written on them.
+// Obsidian Second Brain's title is not in cut letters, on purpose: this row is the page's rest, and the sheets are its drawing.
 // Pegged and cross-linked in red on the left. Numbered and fanned up out of the ink on the right, on a ground of blue hatch.
 import { C, W, rng, pencil, hatch, redLine } from '../kit/draw.mjs';
 import { para } from '../kit/type.mjs';

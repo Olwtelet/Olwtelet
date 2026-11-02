@@ -15,12 +15,9 @@ import * as opening from './sections/opening.mjs';
 import * as demo from './sections/demo.mjs';
 import * as hits from './sections/hits.mjs';
 import * as hold from './sections/hold.mjs';
-import * as integratek from './sections/integratek.mjs';
-import * as agentforge from './sections/agentforge.mjs';
-import * as argus from './sections/argus.mjs';
-import * as resumex from './sections/resumex.mjs';
-import * as anticheat from './sections/anticheat.mjs';
 import * as ordfall from './sections/ordfall.mjs';
+import * as productions from './sections/productions.mjs';
+import * as diseens from './sections/diseens.mjs';
 import * as study from './sections/study.mjs';
 import * as credits from './sections/credits.mjs';
 import * as lights from './sections/lights.mjs';
@@ -31,7 +28,7 @@ const OUT = new URL('assets/film/', ROOT);
 const README = new URL('README.md', ROOT);
 
 // Paint order is call order. A section that must paint over a later one asks for it with ctx.after(name, fn).
-const SECTIONS = { opening, demo, hits, hold, integratek, agentforge, argus, resumex, anticheat, ordfall, study, credits, lights };
+const SECTIONS = { opening, demo, hits, hold, ordfall, productions, diseens, study, credits, lights };
 
 export function buildFilm() {
   const page = new Page(W);

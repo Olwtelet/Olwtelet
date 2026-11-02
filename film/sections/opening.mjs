@@ -190,8 +190,9 @@ export function draw(page, ctx) {
   const B0 = T([459, 169]), B1 = T([761, 650]);
   const bladeX = (y) => B0[0] + ((y - B0[1]) * (B1[0] - B0[0])) / (B1[1] - B0[1]);
   COPY.who.forEach((l, i) => { const y = 112 + i * 31; page.text(Zen, l, Math.max(686, bladeX(y + 6) + 22), y, { size: 24, fill: C.sumi, cls: 'd' }); });
-  para(page, Zen, COPY.whoPhone, RIGHT_EDGE, 120, 41, 47, { cls: 'm', right: true });
-  para(page, Zen, COPY.whoPhone2, RIGHT_EDGE, 120 + COPY.whoPhone.length * 47, 41, 47, { cls: 'm', right: true });
+  // the phone's lines step in with the blade, and the last one stops short of the pencil line running off its tip
+  para(page, Zen, COPY.whoPhone, RIGHT_EDGE, 120, 41, 44, { cls: 'm', right: true });
+  para(page, Zen, COPY.whoPhone2, RIGHT_EDGE, 120 + COPY.whoPhone.length * 44, 41, 44, { cls: 'm', right: true });
 
   timingChart(page, Hand, COPY, score);
 

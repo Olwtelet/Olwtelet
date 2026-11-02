@@ -6,7 +6,7 @@ import { towerQuad, towerPencil } from '../kit/scene.mjs';
 export function draw(page, ctx) {
   const { Y, COPY, L0, faces } = ctx;
   const { gothic: Zen, hand: Hand } = faces;
-  const y0 = Y.hitsEnd, y1 = Y.jun;
+  const y0 = Y.hitsEnd, y1 = Y.holdEnd;
   const R = rng(202);
   const h = 200, x = 880, yb = y1 - 104;
   para(page, Zen, COPY.withAI, L0, y0 + 96, 41, 50, { measure: x - L0 });

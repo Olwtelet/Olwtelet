@@ -4,8 +4,6 @@ import { C, rng, taper } from './draw.mjs';
 
 export const ROW = 22, DAYS = 365, STRIP = 62, STRIP_H = ROW * DAYS;
 export const days = JSON.parse(fs.readFileSync(new URL('../data/year.json', import.meta.url), 'utf8'));
-export const dayIndex = (iso) => days.findIndex((d) => d.date === iso);
-export const yOfDay = (iso) => dayIndex(iso) * ROW;
 
 // Calendar arithmetic on the frozen dates. Sakamoto's weekday, 0 is Sunday: no Date object anywhere in the build.
 const MONTH_OFFSET = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];

@@ -1,5 +1,5 @@
-// d0 to d5. The credits: names forced to one measure, on black, rising on the set's roll like everything else on the street.
-// Every course links to a different site, so a name stays inside its own tile. One WALL entry is one course; layout.mjs flows the rest.
+// d0 to d3. The credits: names forced to one measure, on black, rising on the set's roll like everything else on the street.
+// Every course is its own link, so a name stays inside its own tile. One WALL entry is one course; layout.mjs flows the rest.
 import { C, W, rng, bboxOf, wallRoll, WALL_END } from '../kit/draw.mjs';
 import { word, noteCut, cutWidth, KERN } from '../kit/letters.mjs';
 import { para } from '../kit/type.mjs';
@@ -33,13 +33,13 @@ export function draw(page, ctx) {
   const y0 = Y.credits, y1 = Y.lights;
   page.polys([[[-14, y0], [W + 14, y0], [W + 14, y1 + 40], [-14, y1 + 40]]], `fill="${C.sumi}"`);
   const low = wallRoll(L0, L0); // how far the wall's left end drops
-  page.text(Zen, COPY.wallLead, L0, y0 + 60 + low, { size: 25, fill: C.douga, cls: 'd', rot: ROLL });
+  page.text(Zen, COPY.wallLead, L0, y0 + 60 + low, { size: 38, fill: C.douga, cls: 'd', rot: ROLL });
   const pl = page.wrap(Zen, COPY.wallLead, 41, W - L0 - 28);
   para(page, Zen, pl, L0, y0 + 70 + low, 41, 46, { fill: C.douga, cls: 'm', rot: ROLL });
   courses.forEach((r) => {
     const h = r.letter, y = course(page, r, L0);
     // a caption sits against its own name, and twice as far from the next one. It stands under the name's high end: only
-    // there does the course leave room above the seam, so it opens the same site as the name.
+    // there does the course leave room above the seam, so it opens the same link as the name.
     const caption = (cap, size, drop, cls) => { const x = WALL_END - page.measure(Zen, cap, size) * COS; page.text(Zen, cap, x, y + h + drop + wallRoll(x, L0), { size, fill: C.douga, cls, rot: ROLL }); };
     caption(r.cap, 19, 25, 'd');
     caption(r.capPhone ?? r.cap, 41, 41, 'm');

@@ -1,6 +1,6 @@
 # film
 
-The generator behind this profile's README. It draws one continuous picture, cuts it into 33 linked SVG tiles in
+The generator behind this profile's README. It draws one continuous picture, cuts it into 28 linked SVG tiles in
 `assets/film/`, and writes `README.md` with the same page as plain text under the art. This file is not shown on the profile.
 
 ## Rebuild
@@ -14,7 +14,8 @@ on every change (`.github/workflows/film-check.yml`).
 ## Where the copy lives
 
 `film/content.mjs` holds every fact, link, sentence, note and alt text, and the plain text. Drawing code holds none. Rows,
-tiles and byte budgets are in `film/layout.mjs`, the film's timing in `film/score.mjs`, the drawings in `film/sections/`.
+tiles and byte budgets are in `film/layout.mjs`, the film's timing in `film/score.mjs`, the drawings in `film/sections/`. The
+tower's run and the stamp, which one list has to give to both a drawing and the score, are in `film/kit/route.mjs`.
 
 ## Refreshing the year
 
@@ -27,8 +28,9 @@ and the page prints its window, so it stays true as it gets old. To move the win
 3. Run `node film/build.mjs`, then `--check`, and look at the whole page. A tile the strip's digits push over its line in
    `BUDGET` (`film/layout.mjs`) gets measured size plus 6 percent.
 
-The sections hang from the June and September rows, so they move with the window. The tile above June (`c1-hold`) has only
-8 rows of slack. Past that the check fails and `film/layout.mjs` has to be cut again by hand. A yearly refresh needs that work.
+Nothing on the page hangs from a date: the rows are fixed in `film/layout.mjs`, and a refresh changes only what the strip prints.
+The strip's length does not change either, so where it stops stays where it was looked at. One thing is lined up by eye: the
+ink edge in `film/sections/demo.mjs` sits on the strip's February rule. After a refresh nothing breaks, but the two stop meeting.
 
 ## Fonts and browser checks
 

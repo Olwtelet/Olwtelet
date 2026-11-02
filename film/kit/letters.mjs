@@ -84,8 +84,8 @@ export function cutLine(page, text, x, y, h, fill, { seed = 1, skew = 0, track =
   page.rings(insts, `fill="${fill}"`, { cls, z });
   return wd.width * s * xs;
 }
-// Stretching a word stretches its holes too: forced this wide, F A broke ORDFALL into two words and A T split INTEGRATEK.
-export const KERN = { FA: -32, AT: -26, TA: -22 };
+// Stretching a word stretches its holes too: forced this wide, F A broke ORDFALL into two words.
+export const KERN = { FA: -32 };
 export const cutWidth = (text, h, track = 6) => word(text, rng(1), { track }).width * (h / 140);
 export const fitH = (text, maxW, track = 6, skew = 0) => { const n = word(text, rng(1), { track }).width; return (maxW * 140) / (n + 140 * skew); };
 

@@ -1,5 +1,5 @@
-// c7. Ordfall, the September row: the correction sheet, as loud as the street.
-import { C, W, rng, taper, pencil, swell, clipHalf } from '../kit/draw.mjs';
+// c2. Ordfall: the correction sheet, as loud as the street. A director's red pencil is the most thematic thing on the page.
+import { C, W, rng, taper, swell, clipHalf, redLine } from '../kit/draw.mjs';
 import { cutLine, fitH } from '../kit/letters.mjs';
 import { para } from '../kit/type.mjs';
 import { towerQuad, towerPencil } from '../kit/scene.mjs';
@@ -10,22 +10,21 @@ const RAD = Math.PI / 180;
 export function draw(page, ctx) {
   const { Y, COPY, SHEAR, L0, faces } = ctx;
   const { gothic: Zen, hand: Hand } = faces;
-  const y0 = Y.sep, y1 = Y.study;
+  const y0 = Y.ordfall, y1 = Y.productions;
   const R = rng(909);
-  page.polys([[[-14, y0], [W + 14, y0], [W + 14, y1 + 30], [-14, y1 + 30]]], `fill="${C.douga}"`);
-  // the September line, on its row: drawn here, painted after the sheet, so nothing covers it from the strip to the column's
-  // edge. Its thin ends lie under the strip and past the edge, so it keeps its weight where it can be seen.
-  const line = pencil([STRIP - 76, y0 + 3], [W + 76, y0 + 3], { w: 6, over: 6, R, restate: 0.7, wander: 0.8 });
-  page.text(Hand, COPY.septNote, L0, y0 + 42, { size: 32, fill: C.graphite, R, jit: 6, cls: 'd' });
-  // the acid sheet hangs flat from the row; its left edge runs on the slab's lean, measured off the logo
-  const lean = Math.tan(9.3 * RAD), yt = y0 + 10;
-  const sheet = [[482 - 10 * lean, y0], [W + 14, y0], [W + 14, y1 + 30], [482 + (y1 + 30 - yt) * lean, y1 + 30]];
+  for (let i = 0; i < 56; i++) R(); // the tower, the rings and the arrows keep the very lines they were drawn with
+  // the acid sheet hangs flat from the row; its left edge runs on the slab's lean, measured off the logo, and on down into the
+  // next tile until the blue field there cuts it on the beam's angle
+  const lean = Math.tan(9.3 * RAD), yt = y0 + 10, yEnd = y1 + 340;
+  const sheet = [[482 - 10 * lean, y0], [W + 14, y0], [W + 14, yEnd], [482 + (yEnd - yt) * lean, yEnd]];
   page.polys([sheet], `fill="${C.toka}"`);
   const qa = towerQuad([[520, y0 + 14], [1168, y0 + 14], [1190, y1 - 16], [560, y1 - 8]]);
   // the tower's overshoots stop at the line above them: they do not poke through into the vermilion field
   const below = { polys: (list, attrs, opt) => page.polys(list.map((p) => clipHalf(p, [0, y0 + 3], [W, y0 + 3])), attrs, opt) };
   towerPencil(below, qa, { R, w: 9, gap: 12.5, over: 26, restate: 0.3, hatchSlab: true });
-  page.polys(line, `fill="${C.verm}"`, { cls: 'pl' });
+  // the red line on the top edge, painted after the sheet so nothing covers it. It is the stroke that has always stood at the
+  // foot of the hold, from its own generator: its top edge shows in the tile above, and that tile does not move by a pixel.
+  redLine(page, [STRIP + 2, y0 + 3], [W + 4, y0 + 3], rng(404), 5);
 
   // A loop, tilted when what it circles is tilted.
   const loop = (cx, cy, rx, ry, tilt) => {
@@ -58,10 +57,10 @@ export function draw(page, ctx) {
 
   const hO = fitH(COPY.ordfallTitle, 372, 6, SHEAR.lean);
   cutLine(page, COPY.ordfallTitle, L0, y0 + 66, hO, C.sumi, { seed: 110, skew: SHEAR.lean });
-  const yy = y0 + 66 + hO + 40;
-  para(page, Zen, COPY.ordfallRole, L0, yy, 25, 32, { cls: 'd' });
-  para(page, Zen, COPY.ordfallDatesLines, L0, yy + 72, 18, 24, { cls: 'd' });
-  para(page, Zen, COPY.ordfallBody, L0, yy + 142, 21, 29, { cls: 'd' });
-  page.text(Zen, COPY.ordfallTarget, L0, yy + 142 + 4 * 29 + 8, { size: 18, fill: C.blue, cls: 'd' });
-  para(page, Zen, COPY.ordfallPhone, L0, yy + 22, 41, 48, { cls: 'm' });
+  const yy = y0 + 66 + hO + 44;
+  para(page, Zen, COPY.ordfallRole, L0, yy, 30, 36, { cls: 'd' });
+  para(page, Zen, COPY.ordfallBody, L0, yy + 52, 21, 29, { cls: 'd' });
+  page.text(Zen, COPY.ordfallMotto, L0, yy + 52 + 3 * 29 + 16, { size: 21, fill: C.sumi, cls: 'd' });
+  page.text(Zen, COPY.ordfallTarget, L0, yy + 52 + 3 * 29 + 52, { size: 18, fill: C.blue, cls: 'd' });
+  para(page, Zen, COPY.ordfallPhone, L0, yy + 12, 41, 48, { cls: 'm' });
 }

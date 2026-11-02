@@ -111,7 +111,7 @@ function seams({ film, layout }) {
     if (Math.abs(xNext - W) > 1e-9) fails.push(`row at y ${s.y} ends at x ${xNext}, not ${W}`);
   });
   if (yNext !== Y.end) fails.push(`the rows end at y ${yNext}, the canvas at ${Y.end}`);
-  // each name in the credits and the links is a different site: a letter over its tile's edge opens the wrong one
+  // each name in the credits and the links is its own link: a letter over its tile's edge opens the wrong one
   for (const c of film.page.log.cuts) {
     if (!c.tile) continue;
     const t = film.tiles.find((f) => f.name === c.tile), [x0, y0, x1, y1] = c.box;
@@ -255,15 +255,15 @@ function bytes({ film, layout, root }) {
 // ---------------------------------------------------------------- Content
 const SENTENCES = {
   demo: 'A demo proves that software works once. What I care about is whether it keeps working with bad data, unexpected use and someone trying to break in.',
-  work: 'At Ordfall, I built the company website and work on security: I analyze vulnerabilities and review code, dependencies and configurations. I also built websites for a law firm, a tennis training center, a nonprofit and Integratek.',
-  ai: 'With AI, I use only what I can test, observe and constrain. In AgentForge, one of my open-source projects, I implement the same agent in ten frameworks and measure latency, token usage and failure rate.',
+  ai: 'With AI, I use only what I can test, observe and constrain.',
+  ordfall: 'Ordfall builds and secures the systems behind critical operations, enterprise value, and decisions that cannot fail.',
 };
 // built from pieces so that this file does not trip its own scan
 const PRONOUN = new RegExp(`\\b(${['h' + 'e', 'h' + 'im', 'h' + 'is', 'h' + 'imself'].join('|')})\\b`, 'i');
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const OLD_THEME = /\b(channel|signal|broadcast|bezels?|scanlines?|smpte|vcr|vhs|crt|neon|glitch|circuit|binary|hud)\b|\bREC\b/i;
 const MONTH_YEAR = /\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?) (20\d\d)\b/g;
-const ALLOWED_MONTHS = new Set(['June 2026', 'September 2026', 'Sep 2026']);
+const ALLOWED_MONTHS = new Set([]);
 
 function sourceFiles(dir, types = /\.(mjs|md)$/, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -309,13 +309,14 @@ function contentGuard({ film, root }) {
   }
   const down = [COPY.demoA, COPY.demoB, COPY.demoC, COPY.careA, COPY.careB, ...COPY.hit1, ...COPY.hit2, ...COPY.hit3].join(' ');
   if (down.toLowerCase() !== SENTENCES.demo.toLowerCase()) fails.push(`the sentence does not read verbatim down the page: ${down}`);
-  if (!SENTENCES.ai.startsWith(COPY.withAI.join(' '))) fails.push('the hold line is not the sentence about AI');
-  if (!SENTENCES.work.startsWith(COPY.ordfallBody.join(' '))) fails.push('the Ordfall body is not the sentence about the work');
-  if (!SENTENCES.work.endsWith(COPY.wallLead)) fails.push('the credits lead is not the sentence about the websites');
-  // Sep 2026
-  if (!COPY.who.join(' ').includes('At Ordfall since September 2026.')) fails.push('September 2026 is absent from the who block');
-  if (!COPY.whoPhone2.join(' ').includes('Sep 2026')) fails.push('Sep 2026 is absent from the phone who block');
-  if (!PLAIN.includes('September 2026 to present')) fails.push('September 2026 is absent from the plain text');
+  if (SENTENCES.ai !== COPY.withAI.join(' ')) fails.push('the hold line is not the sentence about AI');
+  if (SENTENCES.ordfall !== COPY.ordfallBody.join(' ')) fails.push('the Ordfall body is not the company\'s sentence');
+  if (COPY.wallLead !== `Directed by ${COPY.name}.`) fails.push('the credits lead does not name the director');
+  // the owner's title
+  const TITLE = 'Director of Ordfall and Olwtelet Productions.';
+  if (!COPY.who.join(' ').includes(TITLE)) fails.push('the title is absent from the who block');
+  if (!COPY.whoPhone2.join(' ').includes(TITLE)) fails.push('the title is absent from the phone who block');
+  if (!PLAIN.includes(TITLE)) fails.push('the title is absent from the plain text');
   for (const s of [...strings, md]) for (const m of s.matchAll(MONTH_YEAR)) if (!ALLOWED_MONTHS.has(m[0])) fails.push(`"${m[0]}" contradicts the dated facts: ${s.slice(0, 60)}`);
   // the mailto against the printed address
   const address = COPY.emailAddress;
@@ -344,14 +345,10 @@ function stripGuard({ film, root, layout }) {
   ];
   for (const [where, text, facts] of printed) for (const fact of facts) if (!text.includes(fact)) fails.push(`${where} does not say "${fact}", which is what film/data/year.json says`);
   year.forEach((d, i) => { if (Object.keys(d).join() !== 'date,n' || !Number.isInteger(d.n) || d.n < 0) fails.push(`row ${i} is not {date, n}`); });
-  const row = (iso) => year.findIndex((d) => d.date === iso);
-  const anchors = [['c2-integratek', '2026-06-01', 'jun'], ['c7-ordfall', '2026-09-01', 'sep']];
-  for (const [name, iso, key] of anchors) {
-    const y = row(iso) * 22, t = film.tiles.find((f) => f.name === name);
-    if (!t) fails.push(`${name} is missing`);
-    else if (t.y !== y) fails.push(`${name} starts at y ${t.y}, its computed row ${iso} is at y ${y}`);
-    if (layout.Y[key] !== y) fails.push(`Y.${key} is ${layout.Y[key]}, its computed row ${iso} is at y ${y}`);
-  }
+  // the strip does not stop at the page's foot: 8030u of rows, and under them its end date, rotated, 234u long
+  const end = film.page.items.find((it) => it.kind === 'text' && it.str === COPY.stripEnd);
+  if (!end) fails.push('the strip\'s end date is not drawn');
+  else if (end.y + 66 > layout.Y.end) fails.push(`the strip's end date reaches y ${end.y}, too close to the page's foot at y ${layout.Y.end}`);
   return fails;
 }
 
@@ -435,7 +432,7 @@ function literals(src) {
   return out;
 }
 const HOLE = '\u0000';
-const CLASS_TOKEN = new RegExp(`^(d|m|pl|sh|hc|cv|im|sm|tw|tp|gr|mk|gh|sky|crk|wed|g\\d|l\\d|t\\d|g${HOLE}|l${HOLE}|t${HOLE}|${HOLE})$`);
+const CLASS_TOKEN = new RegExp(`^(d|m|pl|sh|hc|cv|im|sm|tw|tp|gr|mk|gh|sky|crk|wed|hop|stp|g\\d|l\\d|g${HOLE}|l${HOLE}|${HOLE})$`);
 const ATTRS = new RegExp(`^(fill|stroke)="${HOLE}"( stroke-width="[\\d.]+")?$`);
 const allowedLiteral = (s, sectionNames) => s === '' || s === ' ' || sectionNames.includes(s) || ATTRS.test(s) || /^\.\.\/(kit\/\w+|content)\.mjs$/.test(s) || s.split(' ').every((t) => CLASS_TOKEN.test(t));
 

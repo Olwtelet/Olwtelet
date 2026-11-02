@@ -8,7 +8,7 @@
 // --compare  write nothing; print every day that differs from the file already there, and exit 1 if any does
 //
 // The file holds 365 rows of {date, n}. The window must be 365 days, because the strip is 365 rows.
-// A rebuild for a later window moves the June and September rows and everything hanging from them: see film/README.md.
+// A rebuild for a later window changes only what the strip prints: see film/README.md.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
