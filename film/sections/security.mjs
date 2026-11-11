@@ -1,4 +1,5 @@
-// c2. Ordfall: the correction sheet, as loud as the street. A director's red pencil is the most thematic thing on the page.
+// c2. Security: the correction sheet, as loud as the street. A reviewer's red pencil is the most thematic thing on the page.
+// The one place the page names the company the work is done for: in the text, never as the title or a link.
 import { C, W, rng, taper, swell, clipHalf, redLine } from '../kit/draw.mjs';
 import { cutLine, fitH } from '../kit/letters.mjs';
 import { para } from '../kit/type.mjs';
@@ -10,7 +11,7 @@ const RAD = Math.PI / 180;
 export function draw(page, ctx) {
   const { Y, COPY, SHEAR, L0, faces } = ctx;
   const { gothic: Zen, hand: Hand } = faces;
-  const y0 = Y.ordfall, y1 = Y.productions;
+  const y0 = Y.security, y1 = Y.productions;
   const R = rng(909);
   for (let i = 0; i < 56; i++) R(); // the tower, the rings and the arrows keep the very lines they were drawn with
   // the acid sheet hangs flat from the row; its left edge runs on the slab's lean, measured off the logo, and on down into the
@@ -55,12 +56,10 @@ export function draw(page, ctx) {
   arrow([1096, 256], [1132, 432]);
   [0, 1, 3, 2].forEach((k, i) => { const note = COPY.review[k]; page.text(Hand, note, 1168 - page.measure(Hand, note, 50), y0 + 66 + i * 56, { size: 50, fill: C.sumi, R, jit: 6 }); });
 
-  const hO = fitH(COPY.ordfallTitle, 372, 6, SHEAR.lean);
-  cutLine(page, COPY.ordfallTitle, L0, y0 + 66, hO, C.sumi, { seed: 110, skew: SHEAR.lean });
+  const hO = fitH(COPY.securityTitle, 372, 6, SHEAR.lean);
+  cutLine(page, COPY.securityTitle, L0, y0 + 66, hO, C.sumi, { seed: 110, skew: SHEAR.lean });
   const yy = y0 + 66 + hO + 44;
-  para(page, Zen, COPY.ordfallRole, L0, yy, 30, 36, { cls: 'd' });
-  para(page, Zen, COPY.ordfallBody, L0, yy + 52, 21, 29, { cls: 'd' });
-  page.text(Zen, COPY.ordfallMotto, L0, yy + 52 + 3 * 29 + 16, { size: 21, fill: C.sumi, cls: 'd' });
-  page.text(Zen, COPY.ordfallTarget, L0, yy + 52 + 3 * 29 + 52, { size: 18, fill: C.blue, cls: 'd' });
-  para(page, Zen, COPY.ordfallPhone, L0, yy + 12, 41, 48, { cls: 'm' });
+  para(page, Zen, COPY.securityRole, L0, yy, 30, 36, { cls: 'd' });
+  para(page, Zen, COPY.securityBody, L0, yy + (COPY.securityRole.length - 1) * 36 + 52, 21, 29, { cls: 'd' });
+  para(page, Zen, COPY.securityPhone, L0, yy + 12, 41, 48, { cls: 'm' });
 }

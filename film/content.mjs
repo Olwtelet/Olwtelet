@@ -9,16 +9,16 @@ export const L = {
   orcid: 'https://orcid.org/0009-0008-2485-7398',
   projects: 'https://olwtelet.vercel.app/en/projects/',
   certificates: 'https://olwtelet.vercel.app/en/certificates/',
-  ordfall: 'https://ordfall.vercel.app/en',
+  filmes: 'https://filmeshdonlinegratis.vercel.app/',
   brain: 'https://github.com/Olwtelet/Obsidian-Second-Brain',
 };
 
 export const COPY = {
   name: 'Isaac Rodrigues',
-  who: ['Computer Science student and full-stack', 'developer in Brasília, Brazil, focused', 'on applied AI and cybersecurity.', 'Director of Ordfall and', 'Olwtelet Productions.'],
+  who: ['Computer Science student and full-stack', 'developer in Brasília, Brazil, focused', 'on applied AI and cybersecurity.', 'I make games, software and websites', 'at my studio, Olwtelet', 'Productions.'],
   whoPhone: ['CS student and full-stack', 'developer in Brasília,', 'Brazil. Applied AI and', 'cybersecurity.'],
   handle: ['Olwtelet is my gaming handle', 'and the name I put on my work.'],
-  whoPhone2: ['Director of Ordfall', 'and Olwtelet', 'Productions.'],
+  whoPhone2: ['My studio is', 'Olwtelet', 'Productions.'],
   legendTop: 'one row, one day',
   legendFull: ['One row is one day, Oct 31, 2025', 'to Oct 30, 2026. A number is that', 'day\'s contributions. Red is a hold:', 'none that day. 269 in all, longest', 'run 8 days.'],
   legendPhone: ['One row, one day.', '269 contributions', 'to Oct 30, 2026.'],
@@ -34,13 +34,12 @@ export const COPY = {
   noteUp: 'this way up',
   ok: 'OK',
   withAI: ['With AI, I use only', 'what I can test, observe', 'and constrain.'],
-  ordfallRole: ['Director.'],
-  ordfallBody: ['Ordfall builds and secures the systems', 'behind critical operations, enterprise', 'value, and decisions that cannot fail.'],
-  ordfallMotto: 'We build. We secure. We evolve.',
-  ordfallPhone: ['Director.', 'Software engineering', 'and cybersecurity for', 'critical systems.'],
+  securityRole: ['Freelance cybersecurity', 'analyst at Ordfall.'],
+  securityBody: ['I analyze vulnerabilities and review', 'code, dependencies and configurations.'],
+  securityPhone: ['Freelance', 'cybersecurity analyst', 'at Ordfall.'],
   review: ['vulnerabilities', 'dependencies', 'code', 'configurations'],
-  productionsLead: 'An indie game developer.',
-  noteNoGame: ['no game', 'yet'],
+  productionsLead: 'Games, software and websites.',
+  noteGame: ['Veil is', 'coming'], // no wider than the old note: the tower's hop passes just left of it
   diseensLead: 'An academic passport platform.',
   passportHead: 'Academic passport',
   passportMrz: 'P<DISEENS<<COMING<SOON<<<<<<<<',
@@ -64,32 +63,31 @@ export const COPY = {
   chartName: 'name',
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   words: { email: 'Email', linkedin: 'LinkedIn', resume: 'Resume', portfolio: 'Portfolio', projects: 'Projects', konect: 'Konect', orcid: 'Orcid' },
-  ordfallTitle: 'Ordfall',
+  securityTitle: 'Security',
   productionsTitle: ['Olwtelet', 'Productions'],
   diseensTitle: 'Diseens',
   soon: ['Coming', 'soon'],
-  ordfallTarget: 'ordfall.vercel.app',
   brainTarget: 'Olwtelet/Obsidian-Second-Brain',
   studyTitlePhone: 'Independent: MIT OCW',
 };
 
 // The credits: one array entry is one course of the wall. Adding a project is adding a line here. A name with no site of its own says in `goes` where its alt leads.
 export const WALL = [
-  { name: 'Ordfall', slug: 'ordfall', cap: 'Software engineering and cybersecurity for critical systems', capPhone: 'Software for critical systems', href: L.ordfall },
-  { name: 'Olwtelet Productions', slug: 'productions', cap: 'Indie games. Coming soon.', goes: 'Links to the portfolio.', href: L.portfolio },
-  { name: 'Diseens', slug: 'diseens', cap: 'Academic passport. Coming soon.', goes: 'Links to the portfolio.', href: L.portfolio },
+  { name: 'Olwtelet Productions', slug: 'productions', cap: 'My studio for games, software and websites.', capPhone: 'Games, software, websites.', goes: 'Links to the portfolio.', href: L.portfolio },
+  { name: 'Veil', slug: 'veil', cap: 'A chess-like strategy game for the browser. In development.', capPhone: 'Strategy game. In development.', goes: 'Links to the portfolio.', href: L.portfolio },
+  { name: 'Diseens', slug: 'diseens', cap: 'Academic passport platform. In development.', capPhone: 'Academic passport.', goes: 'Links to the portfolio.', href: L.portfolio },
+  { name: 'Filmes HD Online Grátis', slug: 'filmes', cap: 'Film curation. Screenings live on Discord, no films hosted.', capPhone: 'Film curation site.', href: L.filmes },
 ];
 
-// Three sentences, word for word: the first two from the owner's portfolio, the third from the company's own site. Compared by code in the guards.
+// Two sentences, word for word from the owner's portfolio. Compared by code in the guards.
 export const OWN_WORDS = {
   demo: 'A demo proves that software works once. What I care about is whether it keeps working with bad data, unexpected use and someone trying to break in.',
   ai: 'With AI, I use only what I can test, observe and constrain.',
-  ordfall: 'Ordfall builds and secures the systems behind critical operations, enterprise value, and decisions that cannot fail.',
 };
 
 // Read aloud in order, as a list of links: what it is first, then one short clause of the drawing, then where it goes.
 export const ALT = {
-  tower: 'Isaac Rodrigues. Computer Science student and full-stack developer in Brasília, Brazil, focused on applied AI and cybersecurity. Director of Ordfall and Olwtelet Productions. Olwtelet is my gaming handle and the name I put on my work. The Olwtelet logo drawn as a tower seen from the street, half painted, with the name OLWTELET cut through it and yellow-green light coming through the letters. The black strip down the left edge has one row for each day of the year. Links to the portfolio.',
+  tower: 'Isaac Rodrigues. Computer Science student and full-stack developer in Brasília, Brazil, focused on applied AI and cybersecurity. I make games, software and websites at my studio, Olwtelet Productions. Olwtelet is my gaming handle and the name I put on my work. The Olwtelet logo drawn as a tower seen from the street, half painted, with the name OLWTELET cut through it and yellow-green light coming through the letters. The black strip down the left edge has one row for each day of the year. Links to the portfolio.',
   shadow: 'Portfolio. The tower\'s shadow falling down the page, the letters of the name in light, growing as they come.',
   email: 'Email: olwtelet@outlook.com.',
   shadow2: 'Portfolio. The letters of the name, larger.',
@@ -99,11 +97,11 @@ export const ALT = {
   demo: `${OWN_WORDS.demo} Beside it, the strip's legend: one row is one day, Oct 31, 2025 to Oct 30, 2026; a number is that day's contributions; red is a hold, none that day; 269 in all, longest run 8 days. Links to the portfolio.`,
   hit1: 'Bad data: the tower on a red field with the letters of its name in the wrong order, ringed in pencil. Links to projects.',
   hit2: 'Unexpected use: the tower standing on its head on a blue field, with the note: this way up. Links to projects.',
-  hit3: 'Someone trying to break in: a crack shaped like the logo\'s slit splits the words, and a red wedge driven into it splinters the blue. Links to Ordfall.',
+  hit3: 'Someone trying to break in: a crack shaped like the logo\'s slit splits the words, and a red wedge driven into it splinters the blue. Links to the portfolio.',
   hold: 'With AI, I use only what I can test, observe and constrain. The tower again, in pencil, on empty paper, marked OK in red. Three holes are punched through the sheet. Links to the portfolio.',
-  ordfall: `Ordfall. Director. Software engineering and cybersecurity for critical systems. ${OWN_WORDS.ordfall} ${COPY.ordfallMotto} The tower in pencil on a yellow-green correction sheet, with heavy red rings on vulnerabilities, dependencies, code and configurations. Links to ordfall.vercel.app.`,
-  productions: 'Olwtelet Productions, an indie game developer. Coming soon: no game yet. The words COMING SOON drawn in pencil as a game level, with the tower jumping across the letters. Links to the portfolio.',
-  diseens: 'Diseens, an academic passport platform. Coming soon. An open passport with the tower as its photo and one blue stamp that says COMING SOON, noted in pencil: first stamp. Links to the portfolio.',
+  security: 'Security. Freelance cybersecurity analyst at Ordfall: I analyze vulnerabilities and review code, dependencies and configurations. The tower in pencil on a yellow-green correction sheet, with heavy red rings on vulnerabilities, dependencies, code and configurations. Links to the resume.',
+  productions: 'Olwtelet Productions, my studio for games, software and websites. Veil, a chess-like strategy game that runs in the browser, is in development: the words COMING SOON drawn in pencil as a game level, with the tower jumping across the letters and a pencil note: Veil is coming. Links to the portfolio.',
+  diseens: 'Diseens, an academic passport platform from Olwtelet Productions. In development. An open passport with the tower as its photo and one blue stamp that says COMING SOON, noted in pencil: first stamp. Links to the portfolio.',
   brain: 'Obsidian Second Brain. A public study vault: CS fundamentals, code snippets and daily logs, all cross-linked, drawn as three pegged sheets joined by red pencil links. Work in progress. Links to the repository.',
   study: 'Independent coursework through MIT OpenCourseWare, 2024 to 2026: five sheets fanned up out of the ink, numbered in pencil 6.0001, 6.006, 6.033, 6.036 and 6.867. Core stack: TypeScript, Python, React, Next.js, Node.js, FastAPI. Certificates: 4 Google, 3 Anthropic, 1 Udemy. Portuguese native, English advanced. Links to the resume.',
   wallLead: 'End credits on black. Directed by Isaac Rodrigues. Links to the portfolio.',
@@ -125,15 +123,15 @@ export const PLAIN = `Isaac Rodrigues. [Portfolio](${L.portfolio}), [resume](${L
 <details>
 <summary>The same page, as plain text</summary>
 
-**Isaac Rodrigues.** Computer Science student and full-stack developer in Brasília, Brazil, focused on applied AI and cybersecurity. Director of Ordfall and Olwtelet Productions. Olwtelet is my gaming handle and the name I put on my work.
+**Isaac Rodrigues.** Computer Science student and full-stack developer in Brasília, Brazil, focused on applied AI and cybersecurity. I make games, software and websites at my studio, Olwtelet Productions. Olwtelet is my gaming handle and the name I put on my work.
 
 ${OWN_WORDS.demo}
 
 ${OWN_WORDS.ai}
 
-**[Ordfall](${L.ordfall}).** Software engineering and cybersecurity for critical systems. ${OWN_WORDS.ordfall} ${COPY.ordfallMotto}
+**Security.** Freelance cybersecurity analyst at Ordfall: I analyze vulnerabilities and review code, dependencies and configurations.
 
-**Coming soon.** Olwtelet Productions, an indie game developer: no game or site yet. Diseens, an academic passport platform: no site yet.
+**Olwtelet Productions.** My studio for games, software and websites. Live: [Filmes HD Online Grátis](${L.filmes}), a film curation site; screenings happen live on Discord, and the site hosts no films. In development: Veil, a chess-like strategy game that runs in the browser, and Diseens, an academic passport platform.
 
 **Open source.** [Obsidian Second Brain](${L.brain}): a public study vault of CS fundamentals, code snippets and daily logs, all cross-linked. Work in progress.
 

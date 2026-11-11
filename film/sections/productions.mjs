@@ -62,7 +62,7 @@ export function draw(page, ctx) {
   for (const g of GHOSTS) towerPencil(page, standing(on(g)), { R, w: 2.6, col: C.douga, over: 5, restate: 0.1, noHatch: true, polys: [slab, blade, top, side, foot] });
 
   // above the last drop, in the blue that the drop leaves empty, right of where the tower's head passes on its way off the G
-  COPY.noteNoGame.forEach((l, i) => page.text(Hand, l, 1168 - page.measure(Hand, l, 46), on(TIERS[0].map([0, 0]))[1] - 80 + i * 48, { size: 46, fill: C.douga, R, jit: 6 }));
+  COPY.noteGame.forEach((l, i) => page.text(Hand, l, 1168 - page.measure(Hand, l, 46), on(TIERS[0].map([0, 0]))[1] - 80 + i * 48, { size: 46, fill: C.douga, R, jit: 6 }));
 
   // the one finished thing on the set, standing on the last letter. It has no blue plane: blue would vanish on the field.
   towerFlat(page, standing(on(REST)), { fill: C.sumi, cls: 'hop', planes: { blade: C.douga, top: C.douga, side: C.toka, foot: C.toka } });

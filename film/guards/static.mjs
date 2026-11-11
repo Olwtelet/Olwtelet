@@ -256,7 +256,6 @@ function bytes({ film, layout, root }) {
 const SENTENCES = {
   demo: 'A demo proves that software works once. What I care about is whether it keeps working with bad data, unexpected use and someone trying to break in.',
   ai: 'With AI, I use only what I can test, observe and constrain.',
-  ordfall: 'Ordfall builds and secures the systems behind critical operations, enterprise value, and decisions that cannot fail.',
 };
 // built from pieces so that this file does not trip its own scan
 const PRONOUN = new RegExp(`\\b(${['h' + 'e', 'h' + 'im', 'h' + 'is', 'h' + 'imself'].join('|')})\\b`, 'i');
@@ -302,7 +301,7 @@ function contentGuard({ film, root }) {
   { const m = PRONOUN.exec(md); if (m) fails.push(`"${m[0]}" in README.md: ${md.slice(Math.max(0, m.index - 30), m.index + 30)}`); }
   // ...and that includes comments that ship
   for (const u of sourceFiles(new URL('film/', root))) { const text = fs.readFileSync(u, 'utf8'), m = PRONOUN.exec(text); if (m) fails.push(`"${m[0]}" in ${u.pathname.split('/film/').pop()}: ${text.slice(Math.max(0, m.index - 30), m.index + 30).replace(/\n/g, ' ')}`); }
-  // the three sentences, word for word
+  // the owner's sentences, word for word
   for (const [k, s] of Object.entries(SENTENCES)) {
     if (OWN_WORDS[k] !== s) fails.push(`OWN_WORDS.${k} is not the sentence verbatim`);
     if (!PLAIN.includes(s) || !md.includes(s)) fails.push(`the ${k} sentence is not verbatim in the plain text`);
@@ -310,13 +309,17 @@ function contentGuard({ film, root }) {
   const down = [COPY.demoA, COPY.demoB, COPY.demoC, COPY.careA, COPY.careB, ...COPY.hit1, ...COPY.hit2, ...COPY.hit3].join(' ');
   if (down.toLowerCase() !== SENTENCES.demo.toLowerCase()) fails.push(`the sentence does not read verbatim down the page: ${down}`);
   if (SENTENCES.ai !== COPY.withAI.join(' ')) fails.push('the hold line is not the sentence about AI');
-  if (SENTENCES.ordfall !== COPY.ordfallBody.join(' ')) fails.push('the Ordfall body is not the company\'s sentence');
-  if (COPY.wallLead !== `Directed by ${COPY.name}.`) fails.push('the credits lead does not name the director');
-  // the owner's title
-  const TITLE = 'Director of Ordfall and Olwtelet Productions.';
-  if (!COPY.who.join(' ').includes(TITLE)) fails.push('the title is absent from the who block');
-  if (!COPY.whoPhone2.join(' ').includes(TITLE)) fails.push('the title is absent from the phone who block');
-  if (!PLAIN.includes(TITLE)) fails.push('the title is absent from the plain text');
+  if (COPY.wallLead !== `Directed by ${COPY.name}.`) fails.push('the credits lead does not name who made the page');
+  // the owner's studio, in each telling of who the owner is
+  const STUDIO = 'Olwtelet Productions.';
+  if (!COPY.who.join(' ').includes(STUDIO)) fails.push('the studio is absent from the who block');
+  if (!COPY.whoPhone2.join(' ').includes(STUDIO)) fails.push('the studio is absent from the phone who block');
+  if (!PLAIN.includes(STUDIO)) fails.push('the studio is absent from the plain text');
+  // Ordfall stays in the background: a place of freelance work, named in one frame's text. No title, no link, no wall course.
+  for (const s of [...strings, md]) { const m = /\bdirector\b/i.exec(s); if (m) fails.push(`"${m[0]}" claims a title: ${s.slice(Math.max(0, m.index - 30), m.index + 30)}`); }
+  for (const u of urls) if (/ordfall/i.test(u)) fails.push(`a link to Ordfall: ${u}`);
+  if (content.WALL.some((c) => /ordfall/i.test(c.name))) fails.push('Ordfall has a course on the credits wall');
+  if (/ordfall/i.test(COPY.securityTitle)) fails.push('Ordfall is the title of a frame');
   for (const s of [...strings, md]) for (const m of s.matchAll(MONTH_YEAR)) if (!ALLOWED_MONTHS.has(m[0])) fails.push(`"${m[0]}" contradicts the dated facts: ${s.slice(0, 60)}`);
   // the mailto against the printed address
   const address = COPY.emailAddress;

@@ -1,6 +1,6 @@
 # film
 
-The generator behind this profile's README. It draws one continuous picture, cuts it into 28 linked SVG tiles in
+The generator behind this profile's README. It draws one continuous picture, cuts it into 29 linked SVG tiles in
 `assets/film/`, and writes `README.md` with the same page as plain text under the art. This file is not shown on the profile.
 
 ## Rebuild

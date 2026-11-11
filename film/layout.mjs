@@ -23,15 +23,16 @@ export const BUDGET = {
   'b3-unexpected': 11900,
   'b4-break-in': 8000,
   'c1-hold': 14100,
-  'c2-ordfall': 28400,
+  'c2-security': 25700,
   'c3-productions': 38100,
   'c4-diseens': 23000,
   'c5-brain': 21300,
   'c5-study': 21100,
   'd0-credits': 7100,
-  'd1-ordfall': 8300,
-  'd2-productions': 7000,
-  'd3-diseens': 9500,
+  'd1-productions': 8300,
+  'd2-veil': 10000,
+  'd3-diseens': 7900,
+  'd4-filmes': 8000,
   'z1-email': 6200,
   'z2-portfolio': 1400,
   'z2-resume': 1400,
@@ -49,7 +50,7 @@ export const Y = {
   holdEnd: 4686, // where the hold stops, and with it the first part of the page
 };
 Y.hitsEnd = Y.t + 1690;
-Y.ordfall = Y.holdEnd; Y.productions = Y.ordfall + 640; Y.diseens = Y.productions + 970; Y.study = Y.diseens + 845;
+Y.security = Y.holdEnd; Y.productions = Y.security + 640; Y.diseens = Y.productions + 970; Y.study = Y.diseens + 845;
 Y.credits = Y.study + 300; Y.courses = Y.credits + 150;
 
 // the courses of the wall: one WALL entry is one row, and everything below it re-flows
@@ -91,9 +92,9 @@ export const SLICES = [
   { y: Y.shadowEnd, h: Y.t - Y.shadowEnd, css: 'open', tiles: [{ share: 1, name: 'b1-demo', href: L.portfolio, alt: ALT.demo }] },
   { y: Y.t, h: H1, css: 'open', tiles: [{ share: 1, name: 'b2-bad-data', href: L.projects, alt: ALT.hit1 }] },
   { y: Y.t + H1, h: H2, css: 'open', tiles: [{ share: 1, name: 'b3-unexpected', href: L.projects, alt: ALT.hit2 }] },
-  { y: Y.t + H1 + H2, h: Y.hitsEnd - Y.t - H1 - H2, css: 'crk', tiles: [{ share: 1, name: 'b4-break-in', href: L.ordfall, alt: ALT.hit3 }] },
+  { y: Y.t + H1 + H2, h: Y.hitsEnd - Y.t - H1 - H2, css: 'crk', tiles: [{ share: 1, name: 'b4-break-in', href: L.portfolio, alt: ALT.hit3 }] },
   { y: Y.hitsEnd, h: Y.holdEnd - Y.hitsEnd, tiles: [{ share: 1, name: 'c1-hold', href: L.portfolio, alt: ALT.hold }] },
-  { y: Y.ordfall, h: Y.productions - Y.ordfall, tiles: [{ share: 1, name: 'c2-ordfall', href: L.ordfall, alt: ALT.ordfall }] },
+  { y: Y.security, h: Y.productions - Y.security, tiles: [{ share: 1, name: 'c2-security', href: L.resume, alt: ALT.security }] },
   { y: Y.productions, h: Y.diseens - Y.productions, css: 'hop', tiles: [{ share: 1, name: 'c3-productions', href: L.portfolio, alt: ALT.productions }] },
   { y: Y.diseens, h: Y.study - Y.diseens, css: 'stp', tiles: [{ share: 1, name: 'c4-diseens', href: L.portfolio, alt: ALT.diseens }] },
   { y: Y.study, h: Y.credits - Y.study, tiles: [{ share: 0.625, name: 'c5-brain', href: L.brain, alt: ALT.brain }, { share: 0.375, name: 'c5-study', href: L.resume, alt: ALT.study }] },
