@@ -1,9 +1,10 @@
 // One gag, two tiles: where the tower runs in c3, and where the stamp comes down in c4. One list for the drawing and the motion:
 // sections/productions.mjs draws the letters, arcs and ghosts from it, score.mjs the keyframes, so they cannot drift apart.
 // Everything here is in u from the top of its field. There is no time in this file: the score gives each drawing its beat.
-import { SHEAR, rng, lerp } from './draw.mjs';
-import { word } from './letters.mjs';
+import { SHEAR, lerp } from './draw.mjs';
+import { word, RIGHT_MARGIN } from './letters.mjs';
 import { COPY } from '../content.mjs';
+import { logo } from './scene.mjs';
 
 const TOWER_H = 124; // about half a letter's height: small enough to read as standing on them
 const FEET = [584, 886.5]; // midway between the logo's two feet, slab (431, 911) and block (737, 862)
@@ -15,21 +16,44 @@ export const standing = (foot, h = TOWER_H) => {
   return (p) => [foot[0] + (p[0] - FEET[0]) * sx, foot[1] + (p[1] - FEET[1] + (p[0] - FEET[0]) * FEET_SLOPE) * sy];
 };
 
-// the two tiers of the stage. The first starts at the column's margin, the second ends at the right margin: the drop between them is the staircase.
-const tier = (text, seed, y, h, xs, track, place) => {
-  const { glyphs } = word(text, rng(seed), { amt: 1.6, track }), s = h / 140;
-  const raw = (p) => [p[0] * s * xs + (140 - p[1]) * s * SHEAR.lean, y + p[1] * s];
-  const x0 = place.x ?? place.right - Math.max(...glyphs.flatMap((g) => g.o.map((p) => raw(p)[0])));
-  return { text, h, xs, glyphs, map: (p) => { const q = raw(p); return [x0 + q[0], q[1]]; } };
+// The two tiers of the stage, in the condensed cut letters (CUT_COND), leaning like the set. The second ends at x 1164 and the
+// tower comes to rest on its last letter; the first starts at the column's margin and must end short of the tower standing
+// there (CLEAR), or the tower would stand inside COMING's last letter and its last hop would fall through it. A tier that
+// does not fit at its natural width is narrowed, never under 0.8 of it. Each tier is {text, h, xs, face, glyphs (table units),
+// map (table -> c3 units)}.
+const LEFT = 96, FACE = 'cond', CLEAR = 24;
+const tier = (text, y, h, place) => {
+  const { glyphs } = word(text, null, { face: FACE }), s = h / 140, limit = place.limit ?? RIGHT_MARGIN;
+  const at = (xs) => (p) => [p[0] * s * xs + (140 - p[1]) * s * SHEAR.lean, y + p[1] * s];
+  const span = (xs) => { const xx = glyphs.flatMap((g) => g.o.map((p) => at(xs)(p)[0])); return [Math.min(...xx), Math.max(...xx)]; };
+  const fits = (xs) => { const [a, b] = span(xs), x0 = place.x ?? place.right - b; return x0 + a >= LEFT - 1e-9 && x0 + b <= limit; };
+  let xs = 1;
+  while (!fits(xs) && xs > 0.8) xs = Math.max(0.8, +(xs - 0.005).toFixed(3));
+  const raw = at(xs), x0 = place.x ?? place.right - span(xs)[1];
+  return { text, h, xs, face: FACE, glyphs, map: (p) => { const q = raw(p); return [x0 + q[0], q[1]]; } };
 };
-export const TIERS = [
-  tier(COPY.soon[0], 141, 390, 230, 0.72, 12, { x: 96 }),
-  tier(COPY.soon[1], 142, 654, 250, 1, 8, { right: 1164 }),
-];
 
-// a place to stand: the middle of a letter's flat top, between two corners of its outline
-const tread = (t, g, a, b) => { const { o } = TIERS[t].glyphs[g], p = TIERS[t].map(o[a]), q = TIERS[t].map(o[b]); return [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2]; };
-const STATIONS = [tread(0, 0, 0, 1), tread(0, 2, 0, 1), tread(0, 4, 0, 1), tread(0, 5, 0, 1), tread(1, 3, 3, 4)];
+// A place to stand: the middle of the topmost edge of letter g's outer ring that runs within 15 degrees of the tier's
+// baseline (level). On a flat top that is the top; on a round letter, the crown of its curve. Of two tops at one height,
+// the one nearer the letter's middle.
+const LEVEL = Math.tan((15 * Math.PI) / 180);
+const treadOn = (T, g) => {
+  const o = T.glyphs[g].o.map(T.map);
+  const mx = (Math.min(...o.map((p) => p[0])) + Math.max(...o.map((p) => p[0]))) / 2;
+  let best = null;
+  o.forEach((p, i) => {
+    const q = o[(i + 1) % o.length], dx = q[0] - p[0], dy = q[1] - p[1];
+    if (Math.abs(dx) < 1e-6 || Math.abs(dy / dx) > LEVEL) return;
+    const m = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+    if (!best || m[1] < best[1] - 1 || (Math.abs(m[1] - best[1]) <= 1 && Math.abs(m[0] - mx) < Math.abs(best[0] - mx))) best = m;
+  });
+  return best;
+};
+const SOON = tier(COPY.soon[1], 654, 250, { right: 1164 });
+const restLeft = Math.min(...logo.slice(0, 6).flat().map(standing(treadOn(SOON, 3))).map((p) => p[0]));
+export const TIERS = [tier(COPY.soon[0], 390, 230, { x: LEFT, limit: restLeft - CLEAR }), SOON];
+export const tread = (t, g) => treadOn(TIERS[t], g);
+export const STATIONS = [tread(0, 0), tread(0, 2), tread(0, 4), tread(0, 5), tread(1, 3)];
 
 // One hop is one parabola: a quadratic in time, as a ball falls. `rise` is how far the apex clears the higher end.
 // The two middle hops stay low: on a phone the lead's last word hangs just over the head of the first of them.

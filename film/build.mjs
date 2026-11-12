@@ -3,12 +3,12 @@
 //   node film/build.mjs           writes README.md and assets/film/*.svg
 //   node film/build.mjs --check   builds twice, compares with disk and runs the guards; writes nothing
 import fs from 'node:fs';
-import { C, W, ANG, SHEAR, rng, pegHoles } from './kit/draw.mjs';
+import { C, W, ANG, SHEAR } from './kit/draw.mjs';
 import { Page } from './kit/canvas.mjs';
 import { GuardError } from './kit/letters.mjs';
 import { faces } from './kit/type.mjs';
 import { strip } from './kit/strip.mjs';
-import { L, COPY, ALT, WALL, PLAIN, NOTICE } from './content.mjs';
+import { L, COPY, ALT, WALL, SIGNS, PLAIN, NOTICE } from './content.mjs';
 import * as layout from './layout.mjs';
 import * as score from './score.mjs';
 import * as opening from './sections/opening.mjs';
@@ -22,7 +22,7 @@ import * as study from './sections/study.mjs';
 import * as credits from './sections/credits.mjs';
 import * as lights from './sections/lights.mjs';
 
-const { Y, L0, PEG, SLICES, COURSES, LIGHT_ROWS, BUDGET, FILE_LIMIT, PAGE_LIMIT } = layout;
+const { Y, L0, SLICES, COURSES, LIGHT_ROWS, BUDGET, FILE_LIMIT, PAGE_LIMIT } = layout;
 const ROOT = new URL('../', import.meta.url);
 const OUT = new URL('assets/film/', ROOT);
 const README = new URL('README.md', ROOT);
@@ -34,14 +34,13 @@ export function buildFilm() {
   const page = new Page(W);
   const later = {};
   const ctx = {
-    Y, C, faces, COPY, ALT, L, WALL, ANG, SHEAR, L0,
+    Y, C, faces, COPY, ALT, L, WALL, SIGNS, ANG, SHEAR, L0,
     courses: COURSES, lightRows: LIGHT_ROWS, score,
-    pen: rng(3), // one generator for the notes that share a hand: the handle, the strip's legend and its end date
     after: (name, fn) => { (later[name] ||= []).push(fn); },
   };
 
-  // base paper, with real peg holes through it at the hold
-  page.rings([[[[-14, -14], [W + 14, -14], [W + 14, Y.end + 14], [-14, Y.end + 14]], ...pegHoles(PEG.x, PEG.y)]], `fill="${C.douga}"`);
+  // the base: black, overdrawing the canvas, so no page colour shows at any tile's edge in either theme
+  page.rings([[[[-14, -14], [W + 14, -14], [W + 14, Y.end + 14], [-14, Y.end + 14]]]], `fill="${C.black}"`);
   for (const [name, section] of Object.entries(SECTIONS)) {
     section.draw(page, ctx);
     for (const fn of later[name] || []) fn();

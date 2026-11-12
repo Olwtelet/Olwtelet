@@ -1,6 +1,6 @@
 // The art's own opening at phone width: real <img>, real timelines, screenshots in real time, on a bare page with the art at
 // the top of the window. On the real profile GitHub's header fills a phone's first screen, so a visitor there may scroll in
-// after the film has ended. Read the PNGs: at 300, 800 and 1200 ms only paper and pencil below the tower, nothing settled
+// after the film has ended. Read the PNGs: at 300, 800 and 1200 ms only the navy cover below the tower, nothing settled
 // and no band; at 3000 ms the settled page.
 //
 // usage: node firstscreen.mjs <root> <chromium|webkit> <dark|light> [--out DIR]

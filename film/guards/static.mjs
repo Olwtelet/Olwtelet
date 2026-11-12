@@ -3,11 +3,11 @@
 // Each returns a list of failures in plain words; an empty list is a pass.
 import fs from 'node:fs';
 import { C, W } from '../kit/draw.mjs';
-import { CUT } from '../kit/letters.mjs';
+import { CUT, CUT_COND } from '../kit/letters.mjs';
 import { faces } from '../kit/type.mjs';
 import * as content from '../content.mjs';
 
-const { L, COPY, ALT, OWN_WORDS, NOTICE, PLAIN } = content;
+const { L, COPY, ALT, OWN_WORDS, NOTICE, PLAIN, SIGNS } = content;
 
 // Known departures from a floor, each with its reason and owner. Do not add to this list to make a build pass.
 const CUT_FLOOR_WAIVERS = new Map([]);
@@ -138,8 +138,8 @@ function ground({ film }) {
     const m = /^<path [^>]*?\bd="([^"]*)"/.exec(t.body);
     const box = m && firstSubpathBox(m[1]);
     if (!box) { fails.push(`${t.name}: the first thing painted is not a base path`); continue; }
-    if (box[0] > t.x - 12 || box[1] > t.y - 12 || box[2] < t.x + t.w + 12 || box[3] < t.y + t.h + 12) fails.push(`${t.name}: base paper ${box.join(' ')} does not overdraw the viewBox by 12u`);
-    if (!new RegExp(`^<path [^>]*fill="${C.douga}"`).test(t.body)) fails.push(`${t.name}: the base is not paper`);
+    if (box[0] > t.x - 12 || box[1] > t.y - 12 || box[2] < t.x + t.w + 12 || box[3] < t.y + t.h + 12) fails.push(`${t.name}: the base ${box.join(' ')} does not overdraw the viewBox by 12u`);
+    if (!new RegExp(`^<path [^>]*fill="${C.black}"`).test(t.body)) fails.push(`${t.name}: the base is not black`);
   }
   return fails;
 }
@@ -151,7 +151,8 @@ function lint({ film }) {
   const palette = new Set(Object.values(C).map((h) => h.toLowerCase()));
   for (const [file, svg] of film.files) {
     for (const [re, name] of BANNED) if (re.test(svg)) fails.push(`${file}: ${name}`);
-    for (const m of svg.matchAll(/url\(([^)]*)\)/g)) if (!/^#p[vbg]$/.test(m[1])) fails.push(`${file}: url(${m[1]}) is not a local pattern`);
+    // p... patterns (windows, LED dots), z... dot screens and their phone copies, k... clip paths
+    for (const m of svg.matchAll(/url\(([^)]*)\)/g)) if (!/^#(p[0-9a-zA-Z]+|z[A-Z]m?|k[0-9a-z]+)$/.test(m[1])) fails.push(`${file}: url(${m[1]}) is not a local pattern, screen or clip`);
     if (/https?:|\/\/www\./i.test(svg.replace('xmlns="http://www.w3.org/2000/svg"', ''))) fails.push(`${file}: an http reference other than the SVG namespace`);
     for (const m of svg.matchAll(/\bhref="([^"]*)"/g)) if (!m[1].startsWith('#')) fails.push(`${file}: href "${m[1]}" is not local`);
     // an id reference has to resolve, and a colour has to be in the palette
@@ -167,7 +168,7 @@ function lint({ film }) {
 // ---------------------------------------------------------------- Motion
 function motion({ film, layout, score }) {
   const fails = [];
-  const FILM_LAYERS = ['im', 'sm', 'cv'];
+  const FILM_LAYERS = ['im', 'sm', 'cv', 'g0', 'g1'];
   for (const t of film.tiles) {
     const svg = t.svg, css = styleOf(svg);
     const { inside, outside } = splitMotion(css);
@@ -206,6 +207,11 @@ function motion({ film, layout, score }) {
       if (used && !new RegExp(`\\.${c}\\b[^{}]*\\{opacity:0\\}`).test(outside)) fails.push(`${t.name}: film layer .${c} is not opacity:0 in base CSS`);
       if (used && t.y >= layout.Y.filmEnd) fails.push(`${t.name}: film layer .${c} below the end of the film`);
     }
+    // a looping tile is re-rasterised every frame: it stays flat (no pattern, no clip)
+    if (['crk', 'hop', 'stp'].includes(t.css)) {
+      if (/<pattern/.test(svg)) fails.push(`${t.name}: a <pattern> in a looping tile`);
+      if (/clip-path/.test(svg)) fails.push(`${t.name}: a clip-path in a looping tile`);
+    }
   }
   return fails;
 }
@@ -217,20 +223,28 @@ function floors({ film }) {
     if (it.kind !== 'text') continue;
     const cls = (it.cls || '').split(/\s+/);
     const onPhone = !cls.includes('d'), onDesktop = !cls.includes('m');
-    if (onPhone && it.size < 41) fails.push(`text "${it.str}" is ${it.size}u in the phone composition, under 41u`);
-    if (onDesktop && it.size < 17) fails.push(`text "${it.str}" is ${it.size}u on desktop, under 17u`);
+    // text set through a matrix is held at the size it lands at on the page
+    const m = it.matrix, size = m ? it.size * Math.sqrt(Math.abs(m[0] * m[3] - m[1] * m[2])) : it.size;
+    if (onPhone && size < 41 - 1e-9) fails.push(`text "${it.str}" is ${+size.toFixed(1)}u in the phone composition, under 41u`);
+    if (onDesktop && size < 17 - 1e-9) fails.push(`text "${it.str}" is ${+size.toFixed(1)}u on desktop, under 17u`);
   }
   for (const c of film.page.log.cuts) {
     if (c.h < 41 && !CUT_FLOOR_WAIVERS.has(c.text)) fails.push(`cut line "${c.text}" is ${c.h.toFixed(1)}u tall, under 41u`);
     if (c.xs < 0.6 - 1e-9 || c.xs > 1.75 + 1e-9) fails.push(`cut line "${c.text}" is forced to ${c.xs.toFixed(2)} times its natural width, outside 0.6 to 1.75`);
   }
   // a character outside the alphabet or the cache stops the build at draw time; these catch one nothing drew yet
-  for (const ch of new Set(contentStrings().join(''))) {
+  const signChars = new Set(walkStrings(SIGNS).join(''));
+  const copyChars = new Set(Object.entries(content).filter(([k]) => k !== 'SIGNS').flatMap(([, v]) => walkStrings(v)).join(''));
+  for (const ch of copyChars) {
     if (ch < ' ') continue;
-    if (!faces.gothic.glyphs[ch]) fails.push(`"${ch}" from content.mjs is not in the gothic glyph cache`);
-    if (!faces.hand.glyphs[ch]) fails.push(`"${ch}" from content.mjs is not in the hand glyph cache`);
+    if (!faces.label.glyphs[ch]) fails.push(`"${ch}" from content.mjs is not in the label glyph cache`);
+    if (!faces.ui.glyphs[ch]) fails.push(`"${ch}" from content.mjs is not in the ui glyph cache`);
   }
-  for (const c of film.page.log.cuts) for (const ch of c.text.toUpperCase()) if (!CUT[ch]) fails.push(`"${ch}" is not in the cut alphabet`);
+  for (const ch of signChars) if (!faces.jp.glyphs[ch]) fails.push(`"${ch}" from SIGNS is not in the jp glyph cache`);
+  for (const c of film.page.log.cuts) {
+    const table = c.face === 'cond' ? CUT_COND : CUT;
+    for (const ch of c.text.toUpperCase()) if (!table[ch]) fails.push(`"${ch}" is not in the ${c.face || 'wide'} cut alphabet`);
+  }
   return fails;
 }
 
@@ -321,6 +335,11 @@ function contentGuard({ film, root }) {
   if (content.WALL.some((c) => /ordfall/i.test(c.name))) fails.push('Ordfall has a course on the credits wall');
   if (/ordfall/i.test(COPY.securityTitle)) fails.push('Ordfall is the title of a frame');
   for (const s of [...strings, md]) for (const m of s.matchAll(MONTH_YEAR)) if (!ALLOWED_MONTHS.has(m[0])) fails.push(`"${m[0]}" contradicts the dated facts: ${s.slice(0, 60)}`);
+  // the only words drawn in the art that are not the owner's copy: two generic system words and four verified Japanese signs
+  const SIGN_WORDS = ['警告', '近日公開', 'スタジオ', '完'];
+  for (const [k, v] of Object.entries(SIGNS)) if (!SIGN_WORDS.includes(v)) fails.push(`SIGNS.${k} is "${v}", not one of the verified words`);
+  if (COPY.warning !== 'Warning') fails.push('COPY.warning is not "Warning"');
+  if (COPY.denied !== 'Denied') fails.push('COPY.denied is not "Denied"');
   // the mailto against the printed address
   const address = COPY.emailAddress;
   if (L.email !== `mailto:${address}`) fails.push(`L.email ${L.email} differs from the printed address ${address}`);
@@ -356,18 +375,14 @@ function stripGuard({ film, root, layout }) {
 }
 
 // ---------------------------------------------------------------- Score
-function scoreGuard({ film, score }) {
+function scoreGuard({ score }) {
   const fails = [];
-  const { SCORE, D, CHART_MARKS } = score;
+  const { SCORE, D } = score;
   const frames = SCORE.reduce((a, [, n]) => a + n, 0);
   if (frames !== 63 || D !== 63) fails.push(`${frames} frames, not 63`);
   for (const [id, n] of SCORE) if (n < 3) fails.push(`drawing ${id} is ${n} frames, under 3`);
   const hits = SCORE.filter(([id]) => id === 'hit').length;
   if (hits !== 1) fails.push(`${hits} hits, not 1`);
-  const ids = new Set(SCORE.map(([id]) => id));
-  const marks = film.page.items.filter((it) => it.kind === 'text' && it.mark);
-  for (const m of marks) if (!ids.has(m.str)) fails.push(`chart mark "${m.str}" is not in SCORE`);
-  for (const k of CHART_MARKS) if (!marks.some((m) => m.str === k.id)) fails.push(`chart mark ${k.id} is not drawn`);
   return fails;
 }
 
@@ -435,7 +450,7 @@ function literals(src) {
   return out;
 }
 const HOLE = '\u0000';
-const CLASS_TOKEN = new RegExp(`^(d|m|pl|sh|hc|cv|im|sm|tw|tp|gr|mk|gh|sky|crk|wed|hop|stp|g\\d|l\\d|g${HOLE}|l${HOLE}|${HOLE})$`);
+const CLASS_TOKEN = new RegExp(`^(d|m|sh|cv|im|sm|tw|sky|crk|wed|hop|stp|lnd|g0|g1|l\\d|z[A-Z]|g${HOLE}|l${HOLE}|z${HOLE}|${HOLE})$`);
 const ATTRS = new RegExp(`^(fill|stroke)="${HOLE}"( stroke-width="[\\d.]+")?$`);
 const allowedLiteral = (s, sectionNames) => s === '' || s === ' ' || sectionNames.includes(s) || ATTRS.test(s) || /^\.\.\/(kit\/\w+|content)\.mjs$/.test(s) || s.split(' ').every((t) => CLASS_TOKEN.test(t));
 

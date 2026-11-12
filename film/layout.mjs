@@ -7,39 +7,40 @@ import { L, COPY, ALT, WALL } from './content.mjs';
 export const L0 = STRIP + 34; // left margin of content
 export const MIN_ROW = 150; // a row under this opens a line-strut gap on narrow columns
 
-// ---- byte budgets, one line per tile: measured size plus 6 percent, rounded up to the next 100 B ----
+// ---- byte budgets, one line per tile: measured size plus 6 percent, rounded up to the next 100 B (rewritten at integration from
+// the integrated build). A drawing that grows past its line fails the Bytes guard; its owner remeasures and rewrites the line. ----
 export const FILE_LIMIT = 80000; // the hard limit for any file, and the budget of a tile not listed here
 export const PAGE_LIMIT = 400000;
 export const BUDGET = {
-  'a1-tower': 44100,
-  'a2-shadow-1': 3400,
-  'a2-email': 6600,
-  'a3-shadow-2': 3900,
-  'a3-linkedin': 4700,
-  'a4-shadow-3': 2800,
+  'a1-tower': 40100,
+  'a2-shadow-1': 3100,
+  'a2-email': 5600,
+  'a3-shadow-2': 3000,
+  'a3-linkedin': 3200,
+  'a4-shadow-3': 2100,
   'a4-resume': 3800,
-  'b1-demo': 24800,
-  'b2-bad-data': 12300,
-  'b3-unexpected': 11900,
-  'b4-break-in': 8000,
-  'c1-hold': 14100,
-  'c2-security': 25700,
-  'c3-productions': 38100,
-  'c4-diseens': 23000,
-  'c5-brain': 21300,
-  'c5-study': 21100,
-  'd0-credits': 7100,
-  'd1-productions': 8300,
-  'd2-veil': 10000,
-  'd3-diseens': 7900,
-  'd4-filmes': 8000,
-  'z1-email': 6200,
-  'z2-portfolio': 1400,
-  'z2-resume': 1400,
-  'z2-linkedin': 1700,
-  'z3-projects': 1300,
-  'z3-konect': 1200,
-  'z3-orcid': 1200,
+  'b1-demo': 26000,
+  'b2-bad-data': 28600,
+  'b3-unexpected': 9500,
+  'b4-break-in': 11700,
+  'c1-hold': 29100,
+  'c2-security': 35900,
+  'c3-productions': 26600,
+  'c4-diseens': 23400,
+  'c5-brain': 18500,
+  'c5-study': 22000,
+  'd0-credits': 5300,
+  'd1-productions': 8800,
+  'd2-veil': 9100,
+  'd3-diseens': 8800,
+  'd4-filmes': 8800,
+  'z1-email': 18300,
+  'z2-portfolio': 6800,
+  'z2-resume': 4600,
+  'z2-linkedin': 4400,
+  'z3-projects': 4700,
+  'z3-konect': 4700,
+  'z3-orcid': 5000,
 };
 
 // ---- the Y table: every section boundary, in u ----
@@ -53,33 +54,39 @@ Y.hitsEnd = Y.t + 1690;
 Y.security = Y.holdEnd; Y.productions = Y.security + 640; Y.diseens = Y.productions + 970; Y.study = Y.diseens + 845;
 Y.credits = Y.study + 300; Y.courses = Y.credits + 150;
 
-// the courses of the wall: one WALL entry is one row, and everything below it re-flows
-const WALL_MEASURE = W - L0 - 28;
+// The courses of the wall: one WALL entry is one row, and everything below it re-flows. Each name is forced to the wall's
+// measure in the cut face that needs the least stretch: for wide and condensed, the cap height that fills the measure, held
+// to 60..150; then the stretch that fills it at that height, kept only if it is 0.6..1.75; the smallest |ln xs| wins, wide on a tie.
+export const WALL_MEASURE = W - L0 - 28;
 const COURSE_ROOM = 88; // over a name's letters: its rise across the wall, and its caption under the high end
 const WALL_TAIL = 52; // the tower on the row below stands taller than that row: the last course leaves its head clear of the caption
+const LETTER = [60, 150];
 let courseY = Y.courses;
 export const COURSES = WALL.map((c, i) => {
-  const cw140 = cutWidth(c.name, 140);
-  // the stretch is capped both ways: past these the wedge alphabet turns into wood type
-  const hMin = WALL_MEASURE / (1.75 * cw140 / 140), hMax = WALL_MEASURE / (0.6 * cw140 / 140);
-  const letter = Math.max(hMin * 1.05, Math.min(104, hMax)); // 1.05: at the cap itself a name loses its kerning
-  const y = courseY, h = Math.ceil(letter) + COURSE_ROOM;
+  const fits = ['wide', 'cond'].map((face) => {
+    const h1 = (WALL_MEASURE * 140) / cutWidth(c.name, 140, 0, face);
+    const letter = Math.min(LETTER[1], Math.max(LETTER[0], h1));
+    return { face, letter, xs: WALL_MEASURE / cutWidth(c.name, letter, 0, face) };
+  }).filter((f) => f.xs >= 0.6 && f.xs <= 1.75);
+  if (!fits.length) throw new Error(`no cut face fits ${c.name} to the wall`);
+  const best = fits.reduce((a, b) => (Math.abs(Math.log(b.xs)) < Math.abs(Math.log(a.xs)) - 1e-9 ? b : a));
+  const y = courseY, h = Math.ceil(best.letter) + COURSE_ROOM;
   courseY += h;
-  return { ...c, tile: `d${i + 1}-${c.slug}`, letter, xs: WALL_MEASURE / cutWidth(c.name, letter), y, h };
+  return { ...c, tile: `d${i + 1}-${c.slug}`, face: best.face, letter: best.letter, xs: best.xs, y, h };
 });
 COURSES.at(-1).h += WALL_TAIL;
 Y.lights = courseY + WALL_TAIL;
+// The end roll's link rows. `fg` is each sign's light: EMAIL and the portfolio in LED cyan, the resume mint, LinkedIn pink,
+// projects amber, Konect violet, ORCID green.
 // Firefox lays out to 1/60 px and truncates, so a row's shares must land on it at the real columns or the row stops short of the edge.
 export const LIGHT_ROWS = [
-  { y: Y.lights, h: 340, letterY: 64, letter: 176, tiles: [{ word: COPY.words.email, share: 1, fg: C.toka, href: L.email, name: 'z1-email', alt: ALT.lightsEmail, print: COPY.emailAddress, printPhone: COPY.emailAddress }] },
-  { y: Y.lights + 340, h: 180, letterY: 40, letter: 62, tiles: [{ word: COPY.words.portfolio, share: 0.4, fg: C.douga, href: L.portfolio, name: 'z2-portfolio', alt: ALT.portfolio }, { word: COPY.words.resume, share: 0.3, fg: C.douga, href: L.resume, name: 'z2-resume', alt: ALT.resumeLink }, { word: COPY.words.linkedin, share: 0.3, fg: C.douga, href: L.linkedin, name: 'z2-linkedin', alt: ALT.linkedinLink }] },
-  { y: Y.lights + 520, h: 180, letterY: 40, letter: 62, tiles: [{ word: COPY.words.projects, share: 0.4, fg: C.douga, href: L.projects, name: 'z3-projects', alt: ALT.projects }, { word: COPY.words.konect, share: 0.3, fg: C.douga, href: L.konect, name: 'z3-konect', alt: ALT.konect }, { word: COPY.words.orcid, share: 0.3, fg: C.douga, href: L.orcid, name: 'z3-orcid', alt: ALT.orcid }] },
+  { y: Y.lights, h: 340, letterY: 64, letter: 176, tiles: [{ word: COPY.words.email, share: 1, fg: C.led, href: L.email, name: 'z1-email', alt: ALT.lightsEmail, print: COPY.emailAddress, printPhone: COPY.emailAddress }] },
+  { y: Y.lights + 340, h: 180, letterY: 40, letter: 62, tiles: [{ word: COPY.words.portfolio, share: 0.4, fg: C.led, href: L.portfolio, name: 'z2-portfolio', alt: ALT.portfolio }, { word: COPY.words.resume, share: 0.3, fg: C.mint, href: L.resume, name: 'z2-resume', alt: ALT.resumeLink }, { word: COPY.words.linkedin, share: 0.3, fg: C.pink, href: L.linkedin, name: 'z2-linkedin', alt: ALT.linkedinLink }] },
+  { y: Y.lights + 520, h: 180, letterY: 40, letter: 62, tiles: [{ word: COPY.words.projects, share: 0.4, fg: C.amber, href: L.projects, name: 'z3-projects', alt: ALT.projects }, { word: COPY.words.konect, share: 0.3, fg: C.rimViolet, href: L.konect, name: 'z3-konect', alt: ALT.konect }, { word: COPY.words.orcid, share: 0.3, fg: C.rimGreen, href: L.orcid, name: 'z3-orcid', alt: ALT.orcid }] },
 ];
 Y.end = Y.lights + 700;
 // below the opening, nothing settled may show until the sky comes on; the film stops at this seam
 Y.filmEnd = Y.t + 1010;
-
-export const PEG = { x: 620, y: Y.holdEnd - 40 }; // the real holes through the base paper, at the foot of the hold
 
 // ---- the rows. Every tile is one link; slicing follows meaning, never the grid. css names a generator in score.mjs ----
 const row3 = (i) => ({ y: Y.towerEnd + i * Y.shadowRowH, h: Y.shadowRowH, css: 'open' });

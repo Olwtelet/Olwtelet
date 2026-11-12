@@ -1,22 +1,42 @@
 # Font licenses
 
-film/data/glyphs.json holds outlines made from two fonts, both under the SIL Open Font License 1.1. No font file ships in this repository. Cut letters (film/kit/letters.mjs) are original to this work.
+film/data/glyphs.json and film/data/cut.json hold outlines made from four font families, all under the SIL Open Font License 1.1,
+none with a Reserved Font Name. No font file ships in this repository.
 
-film/data/glyphs.json is a Modified Version of these fonts and is distributed under the same licence. Its hand 6 and 1 are redrawn from the font's own outlines by film/dev/make-glyphs.mjs.
+Both files are Modified Versions of these fonts and are distributed under the same licence:
 
-## Zen Kaku Gothic New Bold
+- film/data/glyphs.json (made by film/dev/make-glyphs.mjs) holds the outlines of the characters the page draws, for six faces:
+  Archivo at three instances of its variable axes (wdth 125 / wght 900, wdth 100 / wght 800, wdth 62 / wght 900), Rajdhani Bold,
+  DotGothic16 and Dela Gothic One. One glyph is changed: in DotGothic16 the T's bar is raised one row of the font's own dot grid
+  (its stem grows by that row), so that it stands at the cap line of the other capitals.
+- film/data/cut.json (made by film/dev/make-cut.mjs) holds Archivo's capitals at two instances (wdth 125 / wght 900 and
+  wdth 62 / wght 900) as polygons: the curves flattened, the cap height scaled to 140 units.
 
-Copyright 2022 The Zen Kaku Gothic Project Authors (https://github.com/googlefonts/zen-kakugothic)
+## Archivo
 
-Source: https://raw.githubusercontent.com/google/fonts/main/ofl/zenkakugothicnew/ZenKakuGothicNew-Bold.ttf
+Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
 
-## Covered By Your Grace
+Source: https://github.com/google/fonts/tree/main/ofl/archivo (the variable font, wdth and wght axes)
 
-Copyright (c) 2010, Kimberly Geswein (kimberlygeswein.com)
+## Rajdhani
 
-Source: https://raw.githubusercontent.com/google/fonts/main/ofl/coveredbyyourgrace/CoveredByYourGrace.ttf
+Copyright (c) 2014, Indian Type Foundry (info@indiantypefoundry.com).
 
-## License text, the same for both
+Source: https://raw.githubusercontent.com/google/fonts/main/ofl/rajdhani/Rajdhani-Bold.ttf
+
+## DotGothic16
+
+Copyright 2020 The DotGothic16 Project Authors (https://github.com/fontworks-fonts/DotGothic16)
+
+Source: https://raw.githubusercontent.com/google/fonts/main/ofl/dotgothic16/DotGothic16-Regular.ttf
+
+## Dela Gothic One
+
+Copyright 2020 The Dela Gothic Project Authors (https://github.com/syakuzen/DelaGothic)
+
+Source: https://raw.githubusercontent.com/google/fonts/main/ofl/delagothicone/DelaGothicOne-Regular.ttf
+
+## License text, the same for all four
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

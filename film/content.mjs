@@ -69,7 +69,13 @@ export const COPY = {
   soon: ['Coming', 'soon'],
   brainTarget: 'Olwtelet/Obsidian-Second-Brain',
   studyTitlePhone: 'Independent: MIT OCW',
+  warning: 'Warning', // generic system words of the hostile interface, drawn in capitals by the kit
+  denied: 'Denied',
 };
+
+// The only Japanese on the page, each an ordinary dictionary word (checked against JMdict): warning, coming soon (of a film),
+// studio, and The End. Drawn in Dela Gothic One; the Floors guard holds their characters to that face.
+export const SIGNS = { warning: '警告', soon: '近日公開', studio: 'スタジオ', end: '完' };
 
 // The credits: one array entry is one course of the wall. Adding a project is adding a line here. A name with no site of its own says in `goes` where its alt leads.
 export const WALL = [
@@ -87,25 +93,25 @@ export const OWN_WORDS = {
 
 // Read aloud in order, as a list of links: what it is first, then one short clause of the drawing, then where it goes.
 export const ALT = {
-  tower: 'Isaac Rodrigues. Computer Science student and full-stack developer in Brasília, Brazil, focused on applied AI and cybersecurity. I make games, software and websites at my studio, Olwtelet Productions. Olwtelet is my gaming handle and the name I put on my work. The Olwtelet logo drawn as a tower seen from the street, half painted, with the name OLWTELET cut through it and yellow-green light coming through the letters. The black strip down the left edge has one row for each day of the year. Links to the portfolio.',
-  shadow: 'Portfolio. The tower\'s shadow falling down the page, the letters of the name in light, growing as they come.',
+  tower: 'Isaac Rodrigues. Computer Science student and full-stack developer in Brasília, Brazil, focused on applied AI and cybersecurity. I make games, software and websites at my studio, Olwtelet Productions. Olwtelet is my gaming handle and the name I put on my work. The Olwtelet logo as a tower printed on a yellow opening-credit card: a black slab with OLWTELET knocked out of it, its other faces in teal and indigo dot screens, and ISAAC RODRIGUES set across it in wide black capitals. The black strip down the left edge has one row for each day of the year. Links to the portfolio.',
+  shadow: 'Portfolio. The tower\'s black shadow falling down the yellow page, the letters of the name in yellow inside it, growing as they come.',
   email: 'Email: olwtelet@outlook.com.',
-  shadow2: 'Portfolio. The letters of the name, larger.',
+  shadow2: 'Portfolio. The letters of the name in the shadow, larger.',
   linkedin: 'LinkedIn.',
   shadow3: 'Portfolio. The letters of the name, larger again.',
   resume: 'Resume.',
-  demo: `${OWN_WORDS.demo} Beside it, the strip's legend: one row is one day, Oct 31, 2025 to Oct 30, 2026; a number is that day's contributions; red is a hold, none that day; 269 in all, longest run 8 days. Links to the portfolio.`,
-  hit1: 'Bad data: the tower on a red field with the letters of its name in the wrong order, ringed in pencil. Links to projects.',
-  hit2: 'Unexpected use: the tower standing on its head on a blue field, with the note: this way up. Links to projects.',
-  hit3: 'Someone trying to break in: a crack shaped like the logo\'s slit splits the words, and a red wedge driven into it splinters the blue. Links to the portfolio.',
-  hold: 'With AI, I use only what I can test, observe and constrain. The tower again, in pencil, on empty paper, marked OK in red. Three holes are punched through the sheet. Links to the portfolio.',
-  security: 'Security. Freelance cybersecurity analyst at Ordfall: I analyze vulnerabilities and review code, dependencies and configurations. The tower in pencil on a yellow-green correction sheet, with heavy red rings on vulnerabilities, dependencies, code and configurations. Links to the resume.',
-  productions: 'Olwtelet Productions, my studio for games, software and websites. Veil, a chess-like strategy game that runs in the browser, is in development: the words COMING SOON drawn in pencil as a game level, with the tower jumping across the letters and a pencil note: Veil is coming. Links to the portfolio.',
-  diseens: 'Diseens, an academic passport platform from Olwtelet Productions. In development. An open passport with the tower as its photo and one blue stamp that says COMING SOON, noted in pencil: first stamp. Links to the portfolio.',
-  brain: 'Obsidian Second Brain. A public study vault: CS fundamentals, code snippets and daily logs, all cross-linked, drawn as three pegged sheets joined by red pencil links. Work in progress. Links to the repository.',
-  study: 'Independent coursework through MIT OpenCourseWare, 2024 to 2026: five sheets fanned up out of the ink, numbered in pencil 6.0001, 6.006, 6.033, 6.036 and 6.867. Core stack: TypeScript, Python, React, Next.js, Node.js, FastAPI. Certificates: 4 Google, 3 Anthropic, 1 Udemy. Portuguese native, English advanced. Links to the resume.',
-  wallLead: 'End credits on black. Directed by Isaac Rodrigues. Links to the portfolio.',
-  lightsEmail: 'Email: olwtelet@outlook.com. The tower with its lights off, only its slit still lit.',
+  demo: `${OWN_WORDS.demo} Set in wide capitals on a yellow credit card and knocked out across it, yellow where the words cross the tower's black shadow or a black slab and black where they cross the yellow; the shadow ends on the edges of that slab. On the yellow below, the last two words in black, and over them, as a small label on a black slab, the strip's legend: one row is one day, Oct 31, 2025 to Oct 30, 2026; a number is that day's contributions; red is a hold, none that day; 269 in all, longest run 8 days. Links to the portfolio.`,
+  hit1: 'Bad data: looking up a night street at the tower, a billboard blown out white high between the buildings showing the tower\'s own mark, its light cyan and mint on the edges that face it, small lights crowded on the far towers, and the tower\'s LED sign lit with the letters of its name in the wrong order, flagged with a red plate: wrong order. Links to projects.',
+  hit2: 'Unexpected use: the tower upside down and tipped far over, one huge dark shape hanging into a lavender field from under the words, its name across it reading upside down and its slit burning white, a slit of white light under its point catching its edges, lens streaks running in at it, and a cyan note: this way up. Links to projects.',
+  hit3: 'Someone trying to break in: from the floor at the tower\'s foot in a hall flooded red, its two plates stand as a dark red wall on a glowing hot pink floor, pale shafts of light and a few small green lights behind it; its slit is cracked open from the floor up, filled with static, pouring pale light across a cracked floor and biting a letter on each line of the words, a dark wedge driven into its head. Links to the portfolio.',
+  hold: 'With AI, I use only what I can test, observe and constrain. The rule printed on a lit roadside billboard with a green OK screen, raised on posts and seen from low on the road with the camera tilted, so the board plunges toward the lower right; the low sun beyond it catches only the yellow lip along its top and throws its shadow down the road. Behind it an elevated road crosses tower blocks with rows of windows, water tanks and cables, and the tower rises out of the bottom of the frame as one dark silhouette half covering a white sun, its edges rimmed in cream. Links to the portfolio.',
+  security: 'Security. Freelance cybersecurity analyst at Ordfall: I analyze vulnerabilities and review code, dependencies and configurations. The tower seen close from its foot, a dark silhouette against a red city that steps lighter toward the street, its edges rimmed pink by a red warning beacon haloed in light in the sky above it and pale where they face its slit, red light shafts falling past it. One large lock-on mark holds the slit, which burns white and throws sparks, with static where it is torn open, and a large plate reading DENIED is stamped across the edge of the lock, on the attack. On the right, translucent red warning panels in thin red line, each with a warning triangle, name what the review checks: a large panel for vulnerabilities, flagged WARNING, and smaller ones layered below it for code, dependencies and configurations. A last panel at the lower left holds the role in cyan under a cyan bar that marks the review complete. Links to the resume.',
+  productions: 'Olwtelet Productions, my studio for games, software and websites. Veil, a chess-like strategy game that runs in the browser, is in development: the words COMING SOON as a game level on a yellow card, a teal halftone panel behind SOON, the tower hopping across the letters, a trail of blue to green afterimages behind its last jump, and the last letter lighting pink as it lands; a teal band cuts across the foot of the words, and a tag: Veil is coming. Links to the portfolio.',
+  diseens: 'Diseens, an academic passport platform from Olwtelet Productions. In development. On an indigo card, the name runs into a close-up of an open passport printed in blues and dot screens, with the tower as its photo, and a pink stamp slammed onto its visa page says COMING SOON in English and Japanese, tagged: first stamp. Links to the portfolio.',
+  brain: 'Obsidian Second Brain. A public study vault: CS fundamentals, code snippets and daily logs, all cross-linked, drawn as three dark words flying out of a white-hot core on streaks of light, small near the core and large as they reach the edge, the light spraying one way in a fan of green rays, torn white shards breaking off round the core, and the name on a dark slab tilted into the burst. Work in progress. Links to the repository.',
+  study: 'Independent coursework through MIT OpenCourseWare, 2024 to 2026: index cards numbered 6.0001, 6.006, 6.033, 6.036 and 6.867 pinned on the wall of a dim teal classroom seen from a low seat, cream where the light of a tall side window falls and teal in the shade, over the board where the coursework is chalked, the chalk bright where the light crosses it, the nearest desk dark in the foreground. Core stack: TypeScript, Python, React, Next.js, Node.js, FastAPI. Certificates: 4 Google, 3 Anthropic, 1 Udemy. Portuguese native, English advanced. Links to the resume.',
+  wallLead: 'End credits as printed title cards. Directed by Isaac Rodrigues, in lemon on a black slab across an indigo field, beside a teal dot screen. Links to the portfolio.',
+  lightsEmail: 'Email: olwtelet@outlook.com. The studio\'s street at night, seen from the wet pavement: a cyan tube sign reading EMAIL on its top floor, a pink one reading studio in Japanese on a blade, and over the roofs the tower with its lights off, only its slit still lit.',
   portfolio: 'Portfolio',
   resumeLink: 'Resume',
   linkedinLink: 'LinkedIn',
